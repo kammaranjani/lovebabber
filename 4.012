@@ -1,0 +1,39 @@
+//Method 1:O(2N)
+  void sort012(int a[], int n)
+    {
+        int c1=0,c2=0;
+    for(int i=0;i<n;i++){
+        if(a[i]==0)
+        c1++;
+        else if(a[i]==1)
+        c2++;
+    }
+    for(int i=0;i<c1;i++){
+        a[i]=0;
+    }
+    for(int i=c1;i<c1+c2;i++){
+        a[i]=1;
+    }
+    for(int i=c1+c2;i<n;i++){
+        a[i]=2;
+    }
+    }
+//Method 2:O(N)
+    void sort012(int a[], int n)
+    {
+        int i=0,mid=0,j=n-1;
+        while(mid<=j){
+            if(a[mid]==1){
+                mid++;
+            }
+            else if(a[mid]==0){
+                swap(&a[mid],&a[i]);
+                mid++;
+                i++;
+            }
+            else if(a[mid]==2){
+                swap(&a[mid],&a[j]);
+                j--;
+            }
+        }
+    }

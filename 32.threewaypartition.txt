@@ -1,0 +1,22 @@
+METHOD 1: O(n),O(1)
+ void threeWayPartition(vector<int>& array,int a, int b)
+    {
+        int st=0;
+        int end=array.size()-1;
+        int i=0;
+        while(i<=end){
+            if(array[i]<a){
+                if(i==st){
+                    i++;
+                    st++;
+                }
+                else
+                swap(array[i],array[st++]);
+            }
+            else if(array[i]>b){
+                swap(array[i],array[end--]);
+            }
+            else
+            i++;
+        }
+    }

@@ -1,0 +1,81 @@
+
+Brute force:O(N^3)
+int maxSubArray(vector<int>& nums) {
+     int ans=INT_MIN,s=0;
+     for(int i=0;i<nums.size();i++){
+         for(int j=i;j<nums.size();j++){
+             s=0;
+             for(int k=i;k<=j;k++){
+                s+=nums[k];
+         }
+         ans=max(ans, s);
+     }
+     }
+       return ans;
+    }
+Better:O(N^2)
+int maxSubArray(vector<int>& nums) {
+     int ans=INT_MIN,s=0;
+     for(int i=0;i<nums.size();i++){
+         s=0;
+         for(int j=i;j<nums.size();j++){
+                s+=nums[j];
+                ans=max(ans, s);
+     }
+     }
+       return ans;
+    }
+METHOD 1:
+ #include<climits>
+    #include<algorithm>
+    long long maxSubarraySum(int arr[], int n){
+        long long cs=0;
+        long long maxs=INT_MIN;
+        int c=0;
+        long long ms=INT_MIN;
+        for(int i=0;i<n;i++){
+             if(arr[i]>ms)
+             ms=arr[i];
+            if(arr[i]<0)
+            c++;
+            cs+=arr[i];
+            if(cs<0){
+                cs=0;
+            }
+               maxs=max(cs,maxs);
+        }
+        if(c==n)
+        return ms;
+        else
+       return maxs; 
+    }
+METHOD 2://refer apna college 
+#include <iostream>
+#include<climits>
+#include<algorithm>
+using namespace std;
+int help(int arr[],int n){
+  int cums[n+1];
+  cums[0]=0;
+  for(int i=1;i<=n;i++){
+      cums[i]=cums[i-1]+arr[i-1];
+  }
+  int maxi=INT_MIN;
+  for(int i=1;i<=n;i++){
+      int s=0;
+      for(int j=1;j<=i;j++){
+          s=cums[i]-cums[j-1];
+      maxi=max(maxi,s);
+      }
+  }
+  return maxi;
+}
+int main() {
+ int n;
+  cin>>n;
+  int arr[n];
+  for(int i=0;i<n;i++)
+  cin>>arr[i];
+  cout<<help(arr,n);
+	return 0;
+}

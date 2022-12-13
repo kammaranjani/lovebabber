@@ -1,0 +1,28 @@
+METHOD 1:O(n),O(n) //best
+bool subArrayExists(int arr[], int n)
+    {
+     unordered_map<int,bool>um;
+     int s=0;
+     for(int i=0;i<n;i++){
+         s+=arr[i];
+         if(um[s]||s==0){
+             return true;
+         }
+         um[s]=true;
+    }
+    return false;
+    }
+//end
+bool subArrayExists(int arr[], int n)
+    {
+        //Your code here
+        unordered_map<int,int>um;
+        int s=0;
+        for(int i=0;i<n;i++){
+            s+=arr[i];
+            if(um.count(s)||s==0)
+            return true;
+            um[s]++;
+        }
+       return false;
+    }

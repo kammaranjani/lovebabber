@@ -1,0 +1,58 @@
+METHOD 2:O(n^2),O(n)//DP
+#include <iostream>
+using namespace std;
+#include<climits>
+#include<algorithm>
+int help(int *arr, int n){
+    int dp[n];
+    for(int i=0;i<n;i++)
+    dp[i]=INT_MAX;
+    dp[0]=0;
+    for(int i=1;i<n;i++){
+        for(int j=0;j<i;j++){
+            if(dp[j]!=INT_MAX&&(arr[j]+j>=i)){
+                if(dp[j]+1<dp[i]){
+                dp[i]=1+dp[j];
+                }
+            }
+        }
+    }
+    if(dp[n-1]!=INT_MAX)
+   return dp[n-1]; 
+   else
+   return -1;
+}
+int main() {
+ int n;
+  cin>>n;
+  int arr[n];
+  for(int i=0;i<n;i++)
+  cin>>arr[i];
+  int p;
+  p=help(arr,n);
+  cout<<p<<endl;
+  return 0;
+}
+METHOD 1:O(n),O(1)
+#include<climits>
+  int minJumps(int arr[], int n){
+  int mr=arr[0];
+  int steps=arr[0];
+  int j=1;
+  if(n<=1)
+  return 0;
+  if(arr[0]==0)
+  return -1;
+  for(int i=1;i<n;i++){
+     if(i==n-1)
+     return j;
+mr=max(mr,i+arr[i]);
+steps--;
+if(steps==0){
+    j++;
+    if(i>=mr)
+    return -1;
+    steps=mr-i;
+}
+  }
+    }

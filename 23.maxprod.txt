@@ -1,0 +1,26 @@
+Method 1:O(n),O(1)
+bruteforce:O(n^2)
+i:0 to n
+prod=1;
+j=i,j<n,j++
+{
+prod*=arr[i];
+ans=max(ans,prod);
+}
+//end
+long long maxProduct(vector<int> arr, int n) {
+	    long long maxs=arr[0];
+	    long long mins=arr[0];
+	   long long ans=maxs;
+	    for(int i=1;i<n;i++){
+	        if(arr[i]<0){
+	           long long t=maxs;
+	           maxs=mins;
+	           mins=t;
+	        }
+	        maxs=max((long long)arr[i],(long long)maxs*arr[i]);
+	        mins=min((long long)arr[i],(long long)mins*arr[i]);
+	       ans=max(ans,maxs);
+	        }
+	        return ans;
+}

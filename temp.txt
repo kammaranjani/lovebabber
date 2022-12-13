@@ -1,0 +1,14 @@
+METHOD 1: O(n^2),O(1)
+#include<climits>
+	long long maxProduct(vector<int> arr, int n) {
+	    long long maxi=INT_MIN;
+	    for(int i=0;i<n;i++){
+	        long long p=1;
+	        for(int j=i;j<n;j++){
+	    p*=arr[j];
+	    maxi=max(maxi,p);
+	        }
+	    }
+	    return maxi;
+	}
+METHOD 2: O(n),O(1)

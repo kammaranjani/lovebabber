@@ -1,0 +1,145 @@
+Method 1://see this method enough //best //returns count of union elements //consider eg:
+5 2
+1 1 1 1 1
+1 1
+output: 1 
+    int doUnion(int a[], int n, int b[], int m)  {
+        sort(a,a+n);
+        sort(b,b+m);
+        int i=0,j=0;
+        int c=0;
+        while(i<n&&j<m){
+            if(i!=0){
+                while(a[i]==a[i-1]&&i<n)
+                i++;
+            }
+             if(j!=0){
+                while(b[j]==b[j-1]&&j<m)
+                j++;
+            }
+            if(i>=n||j>=m)
+            break;
+            if(a[i]<b[j]){
+                c++;
+                i++;
+            }
+            else if(a[i]>b[j]){
+                c++;
+                j++;
+            }
+            else{
+                c++;
+                i++;
+                j++;
+            }
+        }
+        while(i<n){
+            if(i!=0){
+                while(a[i]==a[i-1]&&i<n)
+                i++;
+            }
+            if(i<n)
+            c++;
+            i++;
+        }
+         while(j<m){
+              if(j!=0){
+                while(b[j]==b[j-1]&&j<m)
+                j++;
+            }
+            if(j<m)
+            c++;
+            j++;
+        }
+        return c;
+    }
+//end
+Method 1: intersection //no duplicates allowed //best //enough to see this
+  vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        int i=0,j=0;
+        vector<int> ans;
+        sort(nums1.begin(),nums1.end());
+        sort(nums2.begin(),nums2.end());
+        while(i<nums1.size()&&j<nums2.size()){
+            if(nums1[i]<nums2[j]){
+                i++;
+            }
+            else if(nums1[i]>nums2[j]){
+                j++;
+            }
+            else{
+                if(ans.empty()||ans.back()!=nums1[i])
+                ans.push_back(nums1[i]);
+                i++;
+                j++;
+            }
+        }
+        return ans;
+    }
+//end
+#include<iostream>
+using namespace std;
+void help1(int*arr1,int n,int *arr2,int m){
+int i=0;
+int j=0;
+while(i<n&&j<m){
+    if(i!=0){
+    while(arr1[i-1]==arr1[i])
+        i++;
+    }
+     if(j!=0){
+    while(arr2[j-1]==arr2[j])
+        j++;
+    }
+  if(arr1[i]<arr2[j]){
+    cout<<arr1[i]<<" ";
+    i++;
+  }
+    else if(arr1[i]>arr2[j]){
+        cout<<arr2[j]<<" ";
+    j++;
+    }
+    else{
+     cout<<arr1[i]<<" ";
+     i++;
+     j++;
+    }
+}
+if(i==n){
+    for(j;j<m;j++)
+    cout<<arr2[j]<<" ";
+}
+if(j==m){
+    for(i;i<n;i++)
+    cout<<arr1[i]<<" ";
+}
+}
+void help(int*arr1,int n,int *arr2,int m){
+int i=0;
+int j=0;
+while(i<n&&j<m){
+    if(arr1[i]<arr2[j])
+    i++;
+    else if(arr1[i]>arr2[j])
+    j++;
+    else{
+     cout<<arr1[i]<<" ";
+     i++;
+     j++;
+    }
+}
+}
+int main() {
+ int n,m;
+  cin>>n>>m;
+  int arr1[n],arr2[m];
+  for(int i=0;i<n;i++)
+  cin>>arr1[i];
+  for(int i=0;i<m;i++)
+  cin>>arr2[i];
+  help1(arr1,n,arr2,m);
+//   for(int i=0;i<n;i++)
+//   cout<<arr[i]<<" ";
+  
+	return 0;
+}

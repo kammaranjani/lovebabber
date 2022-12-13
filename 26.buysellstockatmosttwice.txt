@@ -1,0 +1,49 @@
+METHOD 1:O(n),O(1)
+
+METHOD 2:o(N), O(N)
+#include<climits>
+#include <iostream>
+using namespace std;
+int help(int arr[], int n){
+int dp[n];
+for(int i=0;i<n;i++)
+dp[i]=0;
+int ma=arr[n-1];
+int mi=arr[0];
+for(int i=n-2;i>=0;i--){
+    if(arr[i]>ma)
+    ma=arr[i];
+    dp[i]=max(dp[i+1],ma-arr[i]);
+}
+for(int i=1;i<n;i++){
+    if(arr[i]<mi)
+    mi=arr[i];
+    dp[i]=max(dp[i-1],dp[i]+arr[i]-mi);
+}
+return dp[n-1];
+}
+//best O(n),O(1)
+int maxtwobuysell(int arr[],int size) {
+    int first_buy = INT_MIN;
+      int first_sell = 0;
+      int second_buy = INT_MIN;
+      int second_sell = 0;
+       
+      for(int i=0;i<size;i++) {
+         
+          first_buy = max(first_buy,-arr[i]);//we set prices to negative, so the calculation of profit will be convenient
+          first_sell = max(first_sell,first_buy+arr[i]);
+          second_buy = max(second_buy,first_sell-arr[i]);//we can buy the second only after first is sold
+          second_sell = max(second_sell,second_buy+arr[i]);
+       
+    }
+     return second_sell;
+}
+
+int main()
+{
+    int arr[] = {2,30,15,10,8,25,80};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    cout <<help(arr,n);
+    return 0;
+}

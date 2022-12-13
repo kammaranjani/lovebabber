@@ -1,0 +1,51 @@
+#include <iostream>
+#include<algorithm>
+using namespace std;
+pair<int, int>help(int arr[],int n,int k){
+    pair<int,int>p;
+ sort(arr,arr+n);
+    p.first=arr[k-1];
+    p.second=arr[n-k];
+    return p;
+}
+int main() {
+ int n,k;
+  cin>>n;
+  int arr[n];
+  for(int i=0;i<n;i++)
+  cin>>arr[i];
+  cin>>k;
+  pair<int,int>p;
+  p=help(arr,n,k);
+  cout<<p.first<<" "<<p.second<<endl;
+	return 0;
+}
+METHOD:2:
+#include <iostream>
+#include<set>
+using namespace std;
+pair<int, int>help(int arr[],int n,int k){
+    pair<int,int>p;
+ set<int> s(arr,arr+n);
+ set<int>::iterator itr=s.begin();
+ 
+// sort(arr,arr+n);
+    advance(itr,k-1);
+    p.first=*itr;
+    itr=s.begin();
+    advance(itr,n-k);
+    p.second=*itr;
+    return p;
+}
+int main() {
+ int n,k;
+  cin>>n;
+  int arr[n];
+  for(int i=0;i<n;i++)
+  cin>>arr[i];
+  cin>>k;
+  pair<int,int>p;
+  p=help(arr,n,k);
+  cout<<p.first<<" "<<p.second<<endl;
+	return 0;
+}

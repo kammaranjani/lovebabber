@@ -1,0 +1,33 @@
+#include<unordered_map>
+    #include<climits>
+    //Function to return length of longest subsequence of consecutive integers.
+    int findLongestConseqSubseq(int arr[], int N)
+    {
+      //Your code here
+      unordered_map<int, bool>um;
+      for(int i=0;i<N;i++){
+          um[arr[i]]=false;
+      }
+      int c=0,ma=INT_MIN;
+       for(int i=0;i<N;i++){
+           int k=arr[i];
+           while(um.count(k)>0){
+               c++;
+               um.erase(k);
+               k++;
+               
+           }
+          //cout<<c<<endl;
+           k=arr[i]-1;
+           while(um.count(k)>0){
+               c++;
+               um.erase(k);
+               k--;
+              
+           }
+           if(ma<c)
+           ma=c;
+           c=0;
+    }
+    return ma;
+    }

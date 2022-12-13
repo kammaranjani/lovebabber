@@ -1,0 +1,19 @@
+METHOD 1:O(n),O(1)
+#include <iostream>
+using namespace std;
+#include<climits>
+#include<algorithm>
+#include<string>
+int main() {
+string s,s1;
+  cin>>s>>s1;
+string temp;
+temp=s+s;
+for(int i=0;i<s.length();i++){
+    if(temp.substr(i,s.length())==s1)    instead of this for loop,you can use "return (temp.find(s1)!=string::npos);" gives boolean
+    cout<<1;
+}
+	return 0;
+}
+
+

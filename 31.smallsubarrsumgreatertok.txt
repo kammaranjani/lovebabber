@@ -1,0 +1,38 @@
+METHOD 1:O(n),O(1)  //best
+#include<climits>
+    int smallestSubWithSum(int arr[], int n, int x)
+    {
+        int len=INT_MAX;
+        int cs=0;
+        int s=0;
+        int e=0;
+        while(e<n){
+        while(cs<=x&&e<n){
+             cs+=arr[e];
+             e++;
+        }
+        while(cs>x&&s<e){
+            len=min(len,e-s);
+            cs-=arr[s];
+            s++;
+        }
+        }
+        return len;
+    }
+bruteforce(o(n^2),o(1)):
+int help(int arr[],int n,int x){
+    int minl=n;
+    for(int i=0;i<n;i++){
+        if(arr[i]>x){
+            return 1;
+        }
+        int cs=arr[i];
+        for(int j=i+1;j<n;j++){
+            cs+=arr[j];
+            if(cs>x&&minl>j-i+1){
+                minl=j-i+1;
+            }
+        }
+    }
+    return minl;
+}

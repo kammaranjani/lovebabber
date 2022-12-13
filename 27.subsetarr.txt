@@ -1,0 +1,21 @@
+//METHOD 2:O(N),O(N)  //BEST
+#include<unordered_map>
+string isSubset(int a1[], int a2[], int n, int m) {
+    string ans="Yes";
+    unordered_map<int,int> um;
+    for(int i=0;i<n;i++){
+        um[a1[i]]++;
+    }
+    for(int i=0;i<m;i++){
+        if(um[a2[i]]<=0)
+        return "No";
+        um[a2[i]]--;
+    }
+    return ans;
+}
+//bruteforce O(N^2)
+check for each element in second array
+//better O(nlogn+mlogm)
+sort both arrays and search elements of second array in first by doing binary search
+//better
+sort both, two poiner like merging two arrays
