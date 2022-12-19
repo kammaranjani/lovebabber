@@ -11,25 +11,26 @@ int minSwap(int *arr, int n, int k) {
     }
     if(c==0||c==n)
     return 0;
-    int noni=0;
-    for(int i=0;i<c;i++){
-    if(arr[i]>k)
-    noni++;
+     int non=0;
+      for(int l=0;l<fav;l++){
+          if(arr[l]>k){
+          non++;
+          }
+      }
+      int res=INT_MAX;
+      int s=0,e=fav-1;
+      res=min(non,res);
+      while(e<n){
+          e++;
+          res=min(non,res);
+          if(e<n&&arr[e]>k)
+          non++;
+          if(s<n&&arr[s]>k)
+          non--;
+          s++;
+      }
+    return (res==INT_MAX)?0:res;
     }
-    int l=0;
-    int h=c-1;
-    non=noni;
-    while(h<n){
-        noni=min(non,noni);
-        h++;
-        if(arr[h]>k)
-        non++;
-        if(arr[l]>k)
-        non--;
-        l++;
-    }
-    return noni;
-}
 better(O((n-k+1)*k),O(1)) // sliding window technique
     int minSwap(int arr[], int n, int k) {
       int no=0;
