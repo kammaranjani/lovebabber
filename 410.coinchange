@@ -1,0 +1,13 @@
+O(2^n),O(v)
+#include <iostream>
+using namespace std;
+int help(int a[], int n, int v){
+    if(v==0)
+    return 1;
+    if(v<0){
+        return 0;
+    }
+    if(n<=0)
+    return 0;
+    return help(a,n-1,v)+help(a,n,v-a[n-1]);
+}
