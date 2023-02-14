@@ -11,3 +11,25 @@ int help(int a[], int n, int v){
     return 0;
     return help(a,n-1,v)+help(a,n,v-a[n-1]);
 }
+O(n^2),O(n^2)
+#include<vector>
+#include<algorithm>
+  int countWaysToMakeChange(int coins[], int n, int value) {
+    long long a[n + 1][value + 1];
+    for (int i = 0; i <= n; i++) {
+      for (int j = 0; j <= value; j++) {
+        a[i][j] = 0;
+      }
+    }
+    for (int i = 0; i <= n; i++) {
+      a[i][0] = 1;
+    }
+    for (int i = 0; i < n; i++) {
+      for (int j = 1; j <= value; j++) {
+        a[i + 1][j] = a[i][j];
+        if (j >= coins[i])
+          a[i + 1][j] =a[i][j]+ a[i + 1][j - coins[i]];
+      }
+    }
+    return a[n][value];
+  }
