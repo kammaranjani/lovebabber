@@ -1,0 +1,21 @@
+Memoization:O(weight*targetwei), O(weight*targetwei)
+#include <bits/stdc++.h>
+int help(int *weights, int *values, int start, int n, int maxWeight,
+         vector<vector<int>> &a) {
+  if (start == n)
+    return 0;
+  if (a[start][maxWeight] != -1)
+    return a[start][maxWeight];
+  int two = INT_MIN;
+  int one = help(weights, values, start + 1, n, maxWeight, a);
+  if (weights[start] <= maxWeight)
+    two = values[start] +
+          help(weights, values, start + 1, n, maxWeight - weights[start], a);
+  a[start][maxWeight] = max(one, two);
+  return a[start][maxWeight];
+}
+int knapsack(int *weights, int *values, int n, int maxWeight) {
+  vector<vector<int>> a(n + 1, vector<int>(maxWeight + 1, -1));
+  return help(weights, values, 0, n, maxWeight, a);
+}
+Dp: O(weight*targetwei), O(weight*targetwei)
