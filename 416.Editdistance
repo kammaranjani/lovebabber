@@ -1,0 +1,68 @@
+Method:Recursive
+int edit(string s1,string s2, int start, int last){
+    if(start==s1.size())
+        return s2.size()-last;
+    else if(last==s2.size())
+        return s1.size()-start;
+    if(s1[start]==s2[last])
+    return edit(s1,s2,start+1,last+1);
+    else{
+        int ins=edit(s1,s2,start+1,last);
+        int upd=edit(s1,s2,start+1,last+1);
+        int del=edit(s1,s2,start,last+1);
+        return 1+min(ins,min(upd,del));
+    }
+}
+Method:Memoization O(word1.size()+1,word2.size()+1)
+  int minDistance(string word1, string word2) {
+    return edit(word1,word2,0,0);
+    }
+    int edit(string &s1,string &s2, int start, int last,vector<vector<int>>&dp){
+    if(start==s1.size())
+        return s2.size()-last;
+    else if(last==s2.size())
+        return s1.size()-start;
+        if(dp[start][last]!=-1){
+            return dp[start][last];
+        }
+    if(s1[start]==s2[last]){
+    dp[start][last]=edit(s1,s2,start+1,last+1,dp);
+    return dp[start][last];
+    }
+    else{
+        int ins=edit(s1,s2,start+1,last,dp);
+        int upd=edit(s1,s2,start+1,last+1,dp);
+        int del=edit(s1,s2,start,last+1,dp);
+        dp[start][last]=1+min(ins,min(upd,del));
+        return dp[start][last];
+    }
+}
+    int minDistance(string word1, string word2) {
+        int o=word1.size();
+        int t=word2.size();
+        vector<vector<int>>dp(o+1,vector<int>(t+1,-1));
+    return edit(word1,word2,0,0,dp);
+    }
+Method:DP O(word1.size()+1,word2.size()+1)
+int minDistance(string word1, string word2) {
+int o=word1.size();
+int t=word2.size();
+vector<vector<int>>dp(o+1,vector<int>(t+1,-1));
+    for(int i=0;i<=o;i++){
+        dp[i][0]=i;
+    }
+    for(int i=0;i<=t;i++){
+        dp[0][i]=i;
+    }
+    for(int i=1;i<=o;i++){
+        for(int j=1;j<=t;j++){
+            if(word1[i-1]==word2[j-1]){
+                dp[i][j]=dp[i-1][j-1];
+            }
+            else{
+                dp[i][j]=1+min(dp[i-1][j],min(dp[i-1][j-1],dp[i][j-1]));
+            }
+        }
+    }
+    return dp[o][t];
+    }
