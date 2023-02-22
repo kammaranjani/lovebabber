@@ -20,3 +20,5 @@
         }
         return dp[N][s/2];
     }
+Method: Recursive, Memoization
+consider each element and not considering(2 choices just like in a knapsack problem)
