@@ -1,0 +1,60 @@
+  Method: Recursion
+  int help(int rs, int n, int cs, int m, vector<vector<int>> M){
+        if(rs>=n||rs<0)
+        return 0;
+        if(cs>=m)
+        return 0;
+        return M[rs][cs]+max(help(rs,n,cs+1,m,M),max(help(rs+1,n,cs+1,m,M),help(rs-1,n,cs+1,m,M)));
+    }
+    int maxGold(int n, int m, vector<vector<int>> M)
+    {
+        int mg=0;
+        for(int i=0;i<n;i++){
+            mg=max(mg,help(i,n,0,m,M));
+        }
+      return mg;
+    }
+    Method: Memoization O(n*m), O(n*m)
+        int help(int rs, int n, int cs, int m, vector<vector<int>> &M,vector<vector<int>>&dp){
+        if(rs>=n||rs<0)
+        return 0;
+        if(cs>=m)
+        return 0;
+        if(dp[rs][cs]!=-1)
+        return dp[rs][cs];
+        dp[rs][cs]=M[rs][cs]+max(help(rs,n,cs+1,m,M,dp),max(help(rs+1,n,cs+1,m,M,dp),help(rs-1,n,cs+1,m,M,dp)));
+        return dp[rs][cs];
+    }
+    int maxGold(int n, int m, vector<vector<int>> M)
+    {
+    vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+        int mg=0;
+        for(int i=0;i<n;i++){
+            mg=max(mg,help(i,n,0,m,M,dp));
+        }
+      return mg;
+    }
+    Method: DP O(n*m), O(n*m)
+    int maxGold(int n, int m, vector<vector<int>> M)
+    {
+    vector<vector<int>>dp(n+1,vector<int>(m+1,0));
+    int ans=0;
+    for(int i=1;i<=n;i++){
+        dp[i][1]=M[i-1][0];
+        if(m==1){
+                ans=max(ans,dp[i][1]);
+            }
+    }
+    for(int j=2;j<=m;j++){
+        for(int i=1;i<=n;i++){
+            dp[i][j]=M[i-1][j-1]+max(dp[i][j-1],dp[i-1][j-1]);
+            if(i+1<=n){
+             dp[i][j]=M[i-1][j-1]+max(dp[i][j-1],max(dp[i-1][j-1],dp[i+1][j-1]));   
+            }
+            if(j==m){
+                ans=max(ans,dp[i][j]);
+            }
+        }
+    }
+            return ans;
+    }
