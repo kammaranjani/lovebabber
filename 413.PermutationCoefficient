@@ -1,8 +1,19 @@
-O(n), O(1)
- int permutationCoeff(int n, int k){
+Method 1:DP O(n), O(n)
+int permutationCoeff(int n, int k){
         int p=1;
+        vector<int>dp(n+1,1);
+        dp[0]=1;
+        for(int i=1;i<=n;i++){
+            dp[i]=i*dp[i-1];
+        }
+        return dp[n]/dp[n-k];
+    }
+O(n), O(1)
+  int mod=1000000007;
+    int permutationCoeff(int n, int k){
+        long long int p=1;
         for(int i=0;i<k;i++){
-            p=(p*((n-i)%mod))%mod;
+            p=(p%mod*((n-i)%mod))%mod;
         }
         return p;
     }
