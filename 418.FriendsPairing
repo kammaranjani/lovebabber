@@ -1,0 +1,21 @@
+Method: Recursive
+int countFriendsPairings(int n) 
+    { 
+        if(n==0||n==1)
+        return 1;
+        return countFriendsPairings(n-1)+(n-1)*countFriendsPairings(n-2);
+    }
+Method: DP O(n), O(n)
+int countFriendsPairings(int n) 
+    { 
+        int mod=1e9+7;
+        vector<long long int>dp(n+1,0);
+        dp[0]=1;
+        dp[1]=1;
+        for(int i=2;i<=n;i++){
+            //recurrence relation f(n)=f(n-1) /*if n is left single*/
+                                   // +(n-1)*f(n-2) /*if n pair up with any of n-1 elements
+            dp[i]=((dp[i-1]%mod)+((i-1)*(dp[i-2]%mod))%mod)%mod;
+        }
+        return dp[n];
+    }
