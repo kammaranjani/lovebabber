@@ -1,0 +1,31 @@
+Method:DP O(n),O(n)
+int carAssembly(vector<vector<int>>& a, vector<vector<int>>& T, vector<int>& e, vector<int>& x){
+     vector<vector<int>>dp(2, vector<int>(a[0].size(),0));
+      for(int i=0;i<2;i++){
+          dp[i][0]=e[i]+a[i][0];
+      }
+          for(int j=1;j<a[0].size();j++){
+      for(int i=0;i<2;i++){
+              dp[i][j]=a[i][j]+min(dp[i][j-1], T[1-i][j]+dp[1-i][j-1]);
+          }
+      }
+  return min(dp[0][a[0].size()-1]+x[0],dp[1][a[0].size()-1]+x[1]);
+  }
+  Method:Recursion, Memoization O(n), O(n)
+    int m=1e9+7;
+  long long int help(int s, int n, int c, vector<vector<int>>&a, vector<vector<int>>& T, vector<int>&x,vector<vector<long long int>>&dp){
+      if(s==n-1){
+          return (a[c][s]%m+x[c]%m)%m;
+      }
+      if(dp[s][c]!=-1)
+      return dp[s][c];
+      return dp[s][c]=(a[c][s]%m+min(help(s+1,n,c, a,T,x,dp)%m,T[c][s+1]%m+help(s+1,n,abs(1-c),a,T,x,dp)%m)%m)%m;
+  }
+  int carAssembly(vector<vector<int>>& a, vector<vector<int>>& T, vector<int>& e, vector<int>& x){
+      long long int ans=INT_MAX;
+      vector<vector<long long int>>dp(a[0].size(),vector<long long int>(e.size(),-1));
+      for(int i=0;i<e.size();i++){
+      ans=min(ans,e[i]+help(0,a[0].size(),i,a,T,x,dp));
+      }
+      return ans%m;
+  }
