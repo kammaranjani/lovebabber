@@ -1,0 +1,42 @@
+Method: DP o(N),o(N)
+    long long mod=1e7+9;
+    long long countWays(int n, int k){
+        if(n==0)
+        return 0;
+    vector<long long>dp(n+1);
+    dp[0]=0;
+    dp[1]=k;
+    if(n==1)
+    return dp[1];
+    int s=k;
+    int d=k*(k-1);
+    dp[2]=s+d;
+    if(n==2)
+    return dp[2];
+    for(int i=3;i<=n;i++){
+        dp[i]=(d%mod+(s%mod+d%mod)%mod*(k-1)%mod)%mod;
+        s=d;
+        d=(dp[i-1]*(k-1))%mod;
+    }
+    return dp[n];
+    }
+    Method 2: o(N),o(N)
+    long long mod=1e7+9;
+    long long countWays(int n, int k){
+    if(n==0)
+    return 0;
+    if(n==1)
+    return k;
+    int s=k;
+    int d=k*(k-1);
+    if(n==2)
+    return s+d;
+    int ans=0;
+    for(int i=3;i<=n;i++){
+        int total=s+d;
+        ans=(d%mod+total%mod*(k-1)%mod)%mod;
+        s=d;
+        d=(total*(k-1))%mod;
+    }
+    return ans;
+    }
