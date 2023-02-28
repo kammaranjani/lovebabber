@@ -1,0 +1,37 @@
+Method DP O(n^2) O(n^2)
+		int LongestRepeatingSubsequence(string str){
+		    int n=str.size();
+		    int a[n+1][n+1];
+		    for(int i=0;i<=n;i++){
+		        a[0][i]=0;
+		    }
+		    for(int i=1;i<=n;i++){
+		        a[i][0]=0;
+		    }
+		    for(int i=1;i<=n;i++){
+		        for(int j=1;j<=n;j++){
+		            if(str[i-1]==str[j-1]&&i!=j){
+		                a[i][j]=1+a[i-1][j-1];
+		            }
+		            else{
+		                a[i][j]=max(a[i-1][j],a[i][j-1]);
+		            }
+		        }
+		    }
+		    return a[n][n];
+		}
+Method Recursion, Memoization O(n^2) O(n^2)
+int help(string &str, int s, int n, int e, vector<vector<int>>&dp){
+	    if(s==n||e==n)
+	    return 0;
+	    if(dp[s][e]!=-1)
+	    return dp[s][e];
+	    if(s!=e&&str[s]==str[e]){
+	        return dp[s][e]=max(1+help(str,s+1,n,e+1,dp),max(help(str,s+1,n,e,dp),help(str,s,n,e+1,dp)));
+	    }
+	    return dp[s][e]=max(help(str,s,n,e+1,dp),help(str,s+1,n,e,dp));
+	}
+		int LongestRepeatingSubsequence(string str){
+		    vector<vector<int>>dp(str.size()+1,vector<int>(str.size()+1,-1));
+		   return help(str,0,str.size(),0,dp);
+		}
