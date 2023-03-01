@@ -1,0 +1,101 @@
+Method: Recursive
+int help(int prev,int s, vector<int>&nums){
+    if(s==nums.size())
+    return 0;
+    if(prev==-1||nums[prev]<nums[s]){
+        return max(1+help(s,s+1,nums),help(prev,s+1,nums));
+    }
+    return help(prev,s+1,nums,dp);
+    }
+    int lengthOfLIS(vector<int>& nums) {
+    return help(-1,0,nums);
+    }
+Method: Memoization o(n^2) o(n^2)
+int help(int prev,int s, vector<int>&nums,vector<vector<int>>&dp){
+    if(s==nums.size())
+    return 0;
+    if(prev!=-1&&dp[prev][s]!=-1)
+    return dp[prev][s];
+    if(prev==-1||nums[prev]<nums[s]){
+        if(prev!=-1){
+        dp[prev][s]=max(1+help(s,s+1,nums,dp),help(prev,s+1,nums,dp));
+        }
+        return max(1+help(s,s+1,nums,dp),help(prev,s+1,nums,dp));
+    }
+    return dp[prev][s]= help(prev,s+1,nums,dp);
+    }
+    int lengthOfLIS(vector<int>& nums) {
+    vector<vector<int>>dp(nums.size(),vector<int>(nums.size(),-1));
+    return help(-1,0,nums,dp);
+    }
+ Method: DP tabulation o(n^2) o(n^2)
+  int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+      vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+        for(int i=n-1;i>=0;i--){
+            for(int j=i-1;j>=-1;j--){
+                if(j==-1||nums[i]>nums[j]){
+                dp[i][j+1]=max(1+dp[i+1][i+1],dp[i+1][j+1]);  //note here ith row oly depending on i+1th row not
+                //any other rows so we can optimize to solution below i.e.,o(2n)space
+                }
+                else{
+                    dp[i][j+1]=dp[i+1][j+1];
+                }
+            }
+        }
+        return dp[0][0];
+    }
+ Method: DP tabulation o(n^2) o(2n)
+ int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+      vector<int>c(n+1,0),ne(n+1,0);
+        for(int i=n-1;i>=0;i--){
+            for(int j=i-1;j>=-1;j--){
+                if(j==-1||nums[i]>nums[j]){
+                c[j+1]=max(1+ne[i+1],ne[j+1]);
+                }
+                else{
+                    c[j+1]=ne[j+1];
+                }
+            }
+            ne=c;
+        }
+        return ne[0];
+    }
+ Method: DP tabulation o(n^2) o(n)
+ int lengthOfLIS(vector<int>& nums) {
+     if(nums.size()==0)
+    return 0;
+    vector<int>dp(nums.size(),1);
+    for(int i=1;i<nums.size();i++){
+        for(int j=0;j<i;j++){
+            if(nums[j]<nums[i]&&(1+dp[j]>dp[i])){
+                dp[i]=1+dp[j];
+            }
+        }
+    }
+    int ans=1;
+    for(int i=0;i<nums.size();i++){
+        ans=max(ans,dp[i]);
+    }
+    return ans;
+	}
+  Method: Binary Search o(nlogn), o(n)
+  int lengthOfLIS(vector<int>& nums) {
+       if(nums.size()==0)
+       return 0;
+       vector<int>dp;
+       dp.push_back(nums[0]);
+       int l=1;
+       for(int i=1;i<nums.size();i++){
+           if(nums[i]>dp.back()){
+               dp.push_back(nums[i]);
+               l++;
+           }
+           else{
+               int ind=lower_bound(dp.begin(),dp.end(),nums[i])-dp.begin();
+               dp[ind]=nums[i];
+           }
+       }
+    return l;
+    }
