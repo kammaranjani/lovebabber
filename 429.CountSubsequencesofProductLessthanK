@@ -1,0 +1,31 @@
+Method: Recursion, memoization o(n^2), o(n^2)
+#include <bits/stdc++.h>
+using namespace std;
+int help(int a[], int s,int n, int k, int p,vector<vector<int>>&dp){
+    if(p>=k)
+    return 0;
+    if(s==n&&p<k)
+    return 1;
+    if(dp[s][p]!=-1)
+    return dp[s][p];
+    return dp[s][p]=help(a,s+1,n,k,p,dp)+help(a,s+1,n,k,a[s]*p,dp);
+}
+int main() {
+    int n=4;
+ int a[]={1,2,3,4};
+ int k=10;
+ vector<vector<int>>dp(n+1,vector<int>(k+1,-1));
+ cout<<help(a,0,4,k,1,dp)-1;
+    return 0;
+}
+Method: DP o(n^2), o(n^2)
+//but this is including subsquences product equal to k
+vector<vector<int>>dp(n+1,vector<int>(k+1,0));
+ for(int i=1;i<=n;i++){
+     for(int j=1;j<=k;j++){
+         dp[i][j]=dp[i-1][j];
+         if(a[i-1]<=j){
+             dp[i][j]+=dp[i-1][j/a[i-1]]+1;
+         }
+     }
+ }
