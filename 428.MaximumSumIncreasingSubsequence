@@ -1,0 +1,40 @@
+Method: O(n^3), O(n^3)
+int help(int arr[], int prev, int cur, int n, int sum){
+	    if(cur==n){
+	        return sum;
+	    }
+	    string s=to_string(prev)+"*"+to_string(cur)+"*"+to_string(sum);
+	    if(um.find(s)!=um.end())
+	    return um[s];
+	    if(prev==-1||arr[cur]>arr[prev]){
+	        return um[s]=max(help(arr, cur, cur+1, n, sum+arr[cur]),help(arr,prev,cur+1,n, sum));
+	    }
+	    return um[s]=help(arr,prev, cur+1, n, sum);
+	}
+	int maxSumIS(int arr[], int n)  
+	{  
+	    um.clear();
+	    return help(arr, -1, 0, n, 0);
+	}
+  Method: O(n^2), O(n)
+  int maxSumIS(int arr[], int n)  
+	{  
+	    vector<int>dp(n,0);
+	     int omaxi=INT_MIN;
+	    for(int i=0;i<n;i++){
+	        int maxi=INT_MIN;
+	        for(int j=0;j<i;j++){
+	            if(arr[j]<arr[i]){
+	            if(maxi==INT_MIN||dp[j]>maxi)
+	            maxi=dp[j];
+	            }
+	        }
+	        if(maxi==INT_MIN)
+	        dp[i]=arr[i];
+	        else{
+	            dp[i]=arr[i]+maxi;
+	        }
+	        omaxi=max(omaxi,dp[i]);
+	    }
+	    return omaxi;
+	}
