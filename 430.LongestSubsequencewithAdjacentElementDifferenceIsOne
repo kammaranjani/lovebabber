@@ -1,0 +1,33 @@
+Method: Recursive,memoization O(n^2), O(n^2)
+int help(int prev,int s, int n, int A[],vector<vector<int>>&dp){
+    if(s==n)
+    return 0;
+    if(dp[prev+1][s]!=-1)
+    return dp[prev+1][s];
+    if(prev==-1||abs(A[prev]-A[s])==1){
+        return dp[prev+1][s]=max(1+help(s,s+1,n,A,dp),help(prev,s+1,n,A,dp));
+    }
+    return dp[prev+1][s]=help(prev,s+1,n,A,dp);
+    }
+    int longestSubsequence(int N, int A[])
+    {
+     vector<vector<int>>dp(N+1, vector<int>(N+1,-1));
+     return help(-1,0,N,A,dp);
+    } 
+Method: DP O(n^2), O(n)
+int longestSubsequence(int N, int A[])
+    {
+     vector<int>dp(N,1);
+     for(int i=1;i<N;i++){
+         for(int j=0;j<i;j++){
+             if(abs(A[j]-A[i])==1){
+                 dp[i]=max(dp[i],dp[j]+1);
+         }
+     }
+     }
+     int maxi=1;
+     for(int i=0;i<N;i++)
+     maxi=max(maxi,dp[i]);
+     return maxi;
+    }
+   
