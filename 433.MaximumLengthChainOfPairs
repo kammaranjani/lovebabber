@@ -1,0 +1,74 @@
+Method:Recursive
+class cmp{
+    public:
+    bool operator()(val a, val b){
+        return a.first<b.first;
+    }
+    };
+    int help(struct val p[], int prev, int cur, int n,vector<vector<int>>&dp){
+        if(cur==n)
+        return 0;
+        if(dp[prev+1][cur]!=-1)
+        return dp[prev+1][cur];
+        if(prev==-1||p[prev].second<p[cur].first){
+            return dp[prev+1][cur]=max(1+help(p,cur,cur+1,n,dp),help(p,prev,cur+1,n,dp));
+        }
+        return dp[prev+1][cur]=help(p,prev,cur+1,n,dp);
+    }
+    int maxChainLen(struct val p[],int n){
+        cmp c;
+        sort(p,p+n,c);
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        return help(p,-1, 0,n,dp);
+    }
+Method 2: DP o(n*n),o(n*n)
+ int maxChainLen(struct val p[],int n){
+        cmp c;
+        sort(p,p+n,c);
+        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+        for(int i=n-1;i>=0;i--){
+            for(int j=i-1;j>=-1;j--){
+                if(j==-1||p[j].second<p[i].first){
+                dp[i][j+1]=max(1+dp[i+1][i+1],dp[i+1][1+j]);
+                }   
+                else{
+                   dp[i][j+1]=dp[i+1][1+j]; 
+            }
+        }
+        }
+        return dp[0][0];
+    }
+Method 2: DP o(n*n),o(n)
+  int maxChainLen(struct val p[],int n){
+        cmp c;
+        sort(p,p+n,c);
+        vector<int>dp(n,1);
+        for(int i=1;i<n;i++){
+            for(int j=0;j<i;j++){
+                if(p[j].second<p[i].first&&dp[j]>=dp[i]){
+                    dp[i]=1+dp[j];
+                }
+            }
+        }
+        return dp[n-1];
+    }
+Method 3: best O(nlogn),O(1)  //sorting using second value is good unlike first value in above methods //see ways of writing comp
+bool static comp(val fst, val sec){
+        return fst.second<sec.second;
+    }
+int maxChainLen(struct val p[],int n){
+        sort(p,p+n,comp);
+        int maxi=1;
+        int s=p[0].second;
+        for(int i=1;i<n;i++)
+        {
+             if(p[i].first > s )
+             {
+                  s=p[i].second;
+                  maxi++;
+              }
+        }
+        
+        return maxi;
+    }
+    
