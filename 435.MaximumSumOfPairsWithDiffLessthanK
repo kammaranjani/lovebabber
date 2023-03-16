@@ -1,0 +1,50 @@
+Method: Recursive
+int help(int arr[], int c, int n, int k,int s){
+        if(c<=n-1)
+        return s;
+        if(arr[c+1]-arr[c]<k){
+            return max(help(arr,c+1,n,k,s),help(arr,c+2,n,k,s+arr[c]+arr[c+1]));
+        }
+        return help(arr,c+1,n,k,s);
+    }
+    int maxSumPairWithDifferenceLessThanK(int arr[], int N, int K)
+    {
+       sort(arr,arr+N);
+       return help(arr,0,N, K,0);
+    }
+Method: DP O(nlogn), o(N)
+int maxSumPairWithDifferenceLessThanK(int arr[], int N, int K)
+    {
+       sort(arr,arr+N);
+       vector<int>dp(N,0);
+       dp[0]=0;
+       if(arr[1]-arr[0]<K)
+       dp[1]=arr[0]+arr[1];
+       else
+       dp[1]=0;
+       for(int i=2;i<N;i++){
+           if(arr[i]-arr[i-1]>=K){
+            dp[i]=dp[i-1];
+           }else{
+            int a=arr[i]+arr[i-1]+dp[i-2];
+            dp[i]=max(dp[i-1],a);
+           }
+       }
+       return dp[N-1];
+    }
+Method: O(nlogn), o(1)
+int maxSumPairWithDifferenceLessThanK(int arr[], int N, int K)
+    {
+        sort(arr,arr+N,greater<int>());
+        int s=0;
+        int i=0;
+        while(i<N-1){
+            if(arr[i]-arr[i+1]<K){
+                s+=arr[i]+arr[i+1];
+                i+=2;
+            } else{
+                i++;
+            }
+        }
+        return s;
+    }
