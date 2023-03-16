@@ -1,0 +1,53 @@
+Method: Recursive, Memoization 
+  int help(int s,int e, string S,vector<vector<int>>&dp){
+        if(s>e)
+        return 0;
+        if(dp[s][e]!=-1){
+            return dp[s][e];
+        }
+        int c=0;
+       for(int i=s;i<=e;i++){
+           if(S[i]=='1')
+           c=c-1;
+           else
+           c=c+1;
+       }
+        return dp[s][e]=max(c,max(help(s+1,e,S,dp),help(s,e-1,S,dp)));
+    }
+	int maxSubstring(string S)
+	{
+	    int z=0,o=0;
+	    for(int i=0;i<S.size();i++){
+	        if(S[i]=='1')
+	        o++;
+	        else
+	        z++;
+	    }
+	    if(o==0)
+	    return z;
+	    if(z==0)
+	    return -1;
+	    vector<vector<int>>dp(S.size(),vector<int>(S.size(),-1));
+	    return help(0,S.size()-1,S,dp);
+	}
+Method:kadane's O(|s|),O(|s|)
+int maxSubstring(string S)
+	{
+	  int ans=0;
+	  int cur=0;
+	  for(int i=0;i<S.size();i++){
+	      int val=0;
+	      if(S[i]=='1'){
+	          val=-1;
+	      }else{
+	          val=1;
+	      }
+	      if(cur>0){
+	          cur+=val;
+	      }else{
+	          cur=val;
+	      }
+	      ans=max(ans,cur);
+	  }
+	  return ans==0?-1:ans;
+	}
