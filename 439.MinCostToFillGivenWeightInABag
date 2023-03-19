@@ -1,0 +1,54 @@
+Method: recursive, memoization o(s*w), o(s*w)
+int help(int cost[],int s, int n, int w,vector<vector<int>>&dp){
+    if(w==0){
+        return 0;
+    }
+    if(w<0)
+    return INT_MAX;
+    if(s==n)
+    return INT_MAX;
+    int a=INT_MAX;
+     if(dp[s][w]!=-1)
+    return dp[s][w];
+    if(cost[s]!=-1)
+    a=help(cost,s,n,w-s-1,dp);
+    if(a==INT_MAX)
+    return dp[s][w]=help(cost,s+1,n,w,dp);
+    else{
+        int ans=min(cost[s]+a,help(cost,s+1,n,w,dp));
+        return dp[s][w]=ans;
+	}
+	}
+	int minimumCost(int cost[], int N, int W) 
+	{ 
+	    vector<vector<int>>dp(N+1,vector<int>(W+1,-1));
+	    return help(cost,0,N,W,dp)==INT_MAX?-1:help(cost,0,N,W,dp);
+	}
+  Method: DP o(s*w), o(s*w)
+  int minimumCost(int cost[], int N, int W) 
+	{ 
+	    vector<vector<int>>dp(N+1,vector<int>(W+1,INT_MAX));
+	   dp[0][0]=0;
+	     for(int i=1;i<=N;i++){
+	         for(int j=0;j<=W;j++){
+	         if(j==0)
+	         dp[i][j]=0;
+	         else{
+	             if(i<=j){
+	             int a=INT_MAX;
+                 if(cost[i-1]!=-1)
+                  a=dp[i][j-i];
+                 if(a==INT_MAX)
+                 dp[i][j]=dp[i-1][j];
+                 else{
+                 dp[i][j]=min(cost[i-1]+a,dp[i-1][j]);
+	             }
+	             }
+	             else{
+	                 dp[i][j]=dp[j][j];
+	             }
+            	}
+	         }
+	     }
+	return dp[N][W];
+	}
