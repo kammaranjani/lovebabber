@@ -1,0 +1,48 @@
+ Method: Recursive, Memoization O(n^2), O(n^2)
+ int help(vector<int>arr, int s, int e, int k,vector<vector<int>>&dp){
+        if(e-s<=0)
+        return 0;
+        if(arr[e]-arr[s]<=k)
+        return 0;
+        if(dp[s][e]!=-1)
+        return dp[s][e];
+        return dp[s][e]=1+min(help(arr,s+1,e,k,dp),help(arr,s,e-1,k,dp));
+    }
+    int removals(vector<int>& arr, int k){
+        vector<vector<int>>dp(arr.size()+1,vector<int>(arr.size()+1,-1));
+        sort(arr.begin(),arr.end());
+        return help(arr,0,arr.size()-1,k,dp);
+    }
+    Method: DP: O(n^2), O(n^2)
+    int removals(vector<int>& arr, int k){
+        vector<vector<int>>dp(arr.size()+1,vector<int>(arr.size()+1,INT_MAX));
+        int n=arr.size();
+        sort(arr.begin(),arr.end());
+        int ans=INT_MAX;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                   if(i<j){
+                    dp[i][j]=dp[i][j-1];
+                    if(arr[j]-arr[i]<=k){
+                        dp[i][j]=min(n-1-(j-i),dp[i][j-1]);
+                    }
+                }
+                if(j==n-1)
+                ans=min(ans,dp[i][j]);
+            }
+        }
+    return ans==INT_MAX?n-1:ans;
+    }
+    Method: Binary Search O(nlogn), O(1)
+        int removals(vector<int>& arr, int k){
+        int n=arr.size();
+        sort(arr.begin(),arr.end());
+        int ans=INT_MAX;
+        for(int i=0;i<n;i++){
+        int j=INT_MIN;
+        j=upper_bound(arr.begin(),arr.end(),arr[i]+k)-arr.begin()-1;
+        if(j>i)
+        ans=min(ans,n-1-(j-i));
+        }
+        return ans==INT_MAX?n-1:ans;
+    }
