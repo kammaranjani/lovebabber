@@ -1,0 +1,55 @@
+Method: recursive, memoization o(n*m*n), o(n*m)
+  int help(string s1, string s2, int st1, int n, int st2, int m,vector<vector<int>>&dp){
+        if(st1==n||st2==m)
+        return 0;
+        if(dp[st1][st2]!=-1){
+            return dp[st1][st2];
+        }
+        int ans=0,ta=0;
+        int i=st1,j=st2;
+        while(i<n&&j<m&&s1[i++]==s2[j++]){
+            ta++;
+        }
+        ans=max(ans,ta);
+        ans=max(ans,max(help(s1,s2,st1+1,n,st2,m,dp),help(s1,s2,st1,n,st2+1,m,dp)));
+        return dp[st1][st2]=ans;
+    }
+    int longestCommonSubstr (string S1, string S2, int n, int m)
+    {
+        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+        return help(S1,S2,0,n,0,m,dp);
+    }
+Method: DP o(n*m), o(n*m)
+int longestCommonSubstr (string S1, string S2, int n, int m)
+    {
+        vector<vector<int>>dp(n+1,vector<int>(m+1,0));
+        int ans=0;
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                if(S1[i-1]==S2[j-1]){
+                    dp[i][j]=1+dp[i-1][j-1];
+                    ans=max(ans,dp[i][j]);
+                }
+            }
+        }
+        return ans;
+    }
+Method: DP space optimization o(n*m), o(m)
+ int longestCommonSubstr (string S1, string S2, int n, int m)
+    {
+        vector<int>cur(m+1,0),prev(m+1,0);
+        int ans=0;
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                if(S1[i-1]==S2[j-1]){
+                    cur[j]=1+prev[j-1];
+                    ans=max(ans,cur[j]);
+                }
+                else{
+                    cur[j]=0;  //imp
+                }
+            }
+            prev=cur;
+        }
+        return ans;
+    }
