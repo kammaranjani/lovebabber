@@ -1,0 +1,28 @@
+Method: Recursion 
+long m=1e9+7;
+    long long int countBT(int h) { 
+        if(h==1)
+        return 1;
+        if(h==2)
+        return 3;
+        long long int x=countBT(h-1)%m;
+        long long int y=countBT(h-2)%m;
+        return ((x*x)%m+(2*x*y)%m)%m;
+    }
+Method:DP o(h)
+long m=1e9+7;
+    long long int countBT(int h) { 
+        if(h==1)
+        return 1;
+        if(h==2)
+        return 3;
+        vector<long long int>dp(h+1,0);
+        dp[1]=1;
+        dp[2]=3;
+        for(int i=3;i<=h;i++){
+           long long int x=dp[i-1]%m;
+            long long int y=dp[i-2]%m;
+            dp[i]=((x*x)%m+(2*x*y)%m)%m; 
+        }
+        return dp[h];
+    }
