@@ -1,0 +1,65 @@
+Method1:Recursive, memoization 
+int help(int arr[],int e, int n){
+    if(n==0)
+    return 1;
+    if(e<0)
+    return 0;
+    if(n<0){
+        return 0;
+    }
+    int ans=0;
+        ans+=help(arr,e,n-arr[e])+help(arr,e-1,n);
+    return ans;
+}
+Method:DP
+long long int count(long long int n)
+{
+      long long int arr[3]={3,5,10};
+      long long int table[4][n+1];
+      for(long long int i=0;i<=3;i++){
+          for(long long int j=0;j<=n;j++){
+              table[i][j]=0;
+          }
+      }
+     
+     for(long long int j=1;j<=3;j++){
+     for(long long int i=0;i<=n;i++){
+         if(i==0){
+             table[j][i]=1;
+         }
+         else{
+      table[j][i]=table[j-1][i];
+      if(i>=arr[j-1])
+      table[j][i]+=table[j][i-arr[j-1]];
+         }
+	}
+     }
+	return table[3][n];
+}
+Method:DP. (SPACE OPTIMIZED)
+long long int count(long long int n)
+{
+      long long int arr[3]={3,5,10};
+      long long int cur[n+1],prev[n+1];
+          for(long long int j=0;j<=n;j++){
+              cur[j]=0;
+              prev[j]=0;
+          }
+
+     for(long long int j=1;j<=3;j++){
+     for(long long int i=0;i<=n;i++){
+         if(i==0){
+             cur[i]=1;
+         }
+         else{
+      cur[i]=prev[i];
+      if(i>=arr[j-1])
+      cur[i]+=cur[i-arr[j-1]];
+         }
+	}
+	 for(long long int j=0;j<=n;j++){
+              prev[j]=cur[j];
+	 }
+     }
+	return prev[n];
+}
