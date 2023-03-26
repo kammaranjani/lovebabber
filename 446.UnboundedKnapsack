@@ -1,0 +1,61 @@
+Method:recursive memoization o(n*w),o(n*w)
+int help(int s, int n, int w,int val[], int wt[],vector<vector<int>>&dp){
+    if(s>=n)
+    return 0;
+    if(w<0)
+    return INT_MIN;
+    if(dp[s][w]!=-1)
+    return dp[s][w];
+    int a=help(s,n,w-wt[s],val,wt,dp);
+    if(a==INT_MIN){
+        return dp[s][w]=help(s+1,n,w,val,wt,dp);
+    }
+    return dp[s][w]=max(a+val[s],help(s+1,n,w,val,wt,dp));
+}
+    int knapSack(int N, int W, int val[], int wt[])
+    {
+    vector<vector<int>>dp(N+1,vector<int>(W+1,-1));
+    return help(0,N,W,val,wt,dp)==INT_MIN?0:help(0,N,W,val,wt,dp);
+    }
+Method: DP o(n*w), o(n*w)
+int help(int s, int n, int w,int val[], int wt[],vector<vector<int>>&dp){
+    if(s>=n)
+    return 0;
+    if(w<0)
+    return INT_MIN;
+    if(dp[s][w]!=-1)
+    return dp[s][w];
+    int a=help(s,n,w-wt[s],val,wt,dp);
+    if(a==INT_MIN){
+        return dp[s][w]=help(s+1,n,w,val,wt,dp);
+    }
+    return dp[s][w]=max(a+val[s],help(s+1,n,w,val,wt,dp));
+}
+    int knapSack(int N, int W, int val[], int wt[])
+    {
+    vector<vector<int>>dp(N+1,vector<int>(W+1,0));
+    for(int i=1;i<=N;i++){
+        for(int j=0;j<=W;j++){
+            dp[i][j]=dp[i-1][j];
+            if(j>=wt[i-1]){
+                dp[i][j]=max(val[i-1]+dp[i][j-wt[i-1]],dp[i][j]);
+            }
+        }
+    }
+    return dp[N][W];
+    }
+    Method: DP (space optimized) o(n*w), o(w)
+        int knapSack(int N, int W, int val[], int wt[])
+    {
+    vector<int>cur(W+1,0),prev(W+1,0);
+    for(int i=1;i<=N;i++){
+        for(int j=0;j<=W;j++){
+            cur[j]=prev[j];
+            if(j>=wt[i-1]){
+                cur[j]=max(val[i-1]+cur[j-wt[i-1]],cur[j]);
+            }
+        }
+        prev=cur;
+    }
+    return prev[W];
+    }
