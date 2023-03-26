@@ -1,0 +1,94 @@
+Method: backtracking o(2^A.size()), memoization o(A.size()^3) , o(A.size()
+bool cont(string s1, vector<string>&B){
+    for(int i=0;i<B.size();i++){
+        if(s1==B[i])
+        return 1;
+    }
+    return 0;
+}
+ bool help(string A, int s, vector<string>&B,vector<bool>&dp){
+     if(s==A.size())
+     return 1;
+     if(dp[s]) return dp[s];
+     for(int i=s;i<A.size();i++){
+     string s1=A.substr(s,i-s+1);
+     if(cont(s1,B) && help(A,i+1,B,dp)){
+         return dp[s]=1;
+     }
+     }
+     return dp[s]=0;
+ }
+    int wordBreak(string A, vector<string> &B) {
+        vector<bool>dp(A.size(),false);
+        return help(A,0,B,dp)==true?1:0;
+    }
+Method:Recursion
+bool cont(string s1, vector<string>&B){
+    for(int i=0;i<B.size();i++){
+        if(s1==B[i])
+        return 1;
+    }
+    return 0;
+}
+bool help(string A, int s,int n,vector<string> &B,vector<vector<bool>>&dp) {
+string s1=A.substr(s,n-s+1);
+if(cont(s1,B))
+return 1;
+    if(dp[s][n])
+    return dp[s][n];
+for(int i=s;i<n;i++){
+if(help(A,s,i,B,dp)&&help(A,i+1,n,B,dp))
+return dp[s][n]=1;
+}
+return dp[s][n]=0;
+}
+    int wordBreak(string A, vector<string> &B) {
+        vector<vector<bool>>dp(A.size(),vector<bool>(A.size(),0));
+        return help(A,0,A.size()-1,B,dp);
+    }
+Method: DP o(B.size()*A.size()*A.size()),o(A.size())
+  int wordBreak(string A, vector<string> &B) {
+        int n=A.size();
+        vector<int>dp(A.size(),0);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<=i;j++){
+            if(cont(A.substr(j,i-j+1),B)){
+            if(j>0){
+                dp[i]=dp[i]+dp[j-1];
+            }else{
+                dp[i]=1;
+            }
+            }
+        }
+    }
+    return dp[n-1]>0?1:0;
+    }
+Method: Dp(space optimization) o(n*sumofelements), o(sumofelements)
+ bool help(int n, int arr[], int s){
+        vector<int>prev(s+1,0),cur(s+1,0);
+        cur[0]=1,prev[0]=1;
+        for(int i=1;i<=n;i++){
+            for(int j=0;j<=s;j++){
+            if(j==0){
+                cur[j]=1;
+            }else{
+             cur[j]=prev[j];
+             if(j>=arr[i-1]){
+                 cur[j]=prev[j]+prev[j-arr[i-1]];
+             }
+            }
+            }
+            prev=cur;
+        }
+        return prev[s];
+    }
+    int equalPartition(int N, int arr[])
+    {
+         int s=0;
+         for(int i=0;i<N;i++){
+             s+=arr[i];
+         }
+         if(s%2!=0)
+         return 0;
+        return help(N-1,arr,s/2);
+    }
