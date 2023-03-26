@@ -1,0 +1,69 @@
+Method:recursion
+bool help(int n, int arr[], int s1,int s2){
+        if(n<0){
+            return s1==s2;
+        }
+        return help(n-1,arr,s1+arr[n],s2)||help(n-1,arr,s1,s2+arr[n]);
+    }
+    int equalPartition(int N, int arr[])
+    {
+        return help(N-1,arr,0,0);
+    }
+Method:DP o(n*sumofelements), o(n*sumofelements)
+  bool help(int n, int arr[], int s){
+        vector<vector<int>>dp(n+1,vector<int>(s+1,0));
+        dp[0][0]=1;
+        for(int i=1;i<=n;i++){
+            for(int j=0;j<=s;j++){
+            if(j==0){
+                dp[i][j]=1;
+            }else{
+             dp[i][j]=dp[i-1][j];
+             if(j>=arr[i-1]){
+                 dp[i][j]=dp[i-1][j]+dp[i-1][j-arr[i-1]];
+             }
+            }
+            }
+        }
+        return dp[n][s];
+    }
+    int equalPartition(int N, int arr[])
+    {
+        
+         int s=0;
+         for(int i=0;i<N;i++){
+             s+=arr[i];
+         }
+         if(s%2!=0)
+         return 0;
+        return help(N-1,arr,s/2);
+    }
+Method:Dp(space optimization) o(n*sumofelements), o(sumofelements)
+  bool help(int n, int arr[], int s){
+         vector<int>prev(s+1,0),cur(s+1,0);
+         cur[0]=1,prev[0]=1;
+         for(int i=1;i<=n;i++){
+             for(int j=0;j<=s;j++){
+             if(j==0){
+                 cur[j]=1;
+             }else{
+              cur[j]=prev[j];
+              if(j>=arr[i-1]){
+                  cur[j]=prev[j]+prev[j-arr[i-1]];
+              }
+             }
+             }
+             prev=cur;
+         }
+         return prev[s];
+     }
+     int equalPartition(int N, int arr[])
+     {
+          int s=0;
+          for(int i=0;i<N;i++){
+              s+=arr[i];
+          }
+          if(s%2!=0)
+          return 0;
+         return help(N-1,arr,s/2);
+     }
