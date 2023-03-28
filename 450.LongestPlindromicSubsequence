@@ -1,0 +1,46 @@
+Method: Recursive 
+bool pali(string o){
+       for(int i=0,j=o.size()-1;i<j;i++,j--){
+          if(o[i]!=o[j]){
+              return false;
+          }
+      } 
+      return true;
+  } 
+  int help(int s,string A,string o){
+      int ans=0;
+      if(s==A.size()){
+       if(pali(o)){
+          ans=max(ans,static_cast<int>(o.size()));
+      }
+          return ans;
+      }
+      ans= max(ans,max(help(s+1,A,o+A.substr(s,1)),help(s+1,A,o)));
+    return ans;
+      
+  }
+    int longestPalinSubseq(string A) {
+        string o="";
+    return help(0,A,o);
+    }
+    Method: DP o(n^2), o(n^2) //can ve space optimized
+    int longestPalinSubseq(string A) {
+    string a=A;
+    reverse(a.begin(),a.end());
+    vector<vector<int>>dp(A.size()+1,vector<int>(A.size()+1,0));
+    int n=A.size();
+    for(int i=0;i<=n;i++){
+        for(int j=0;j<=n;j++){
+            if(i==0||j==0){
+                dp[i][j]=0;
+            }else{
+                if(A[i-1]==a[j-1]){
+                    dp[i][j]=1+dp[i-1][j-1];
+                }else{
+                    dp[i][j]=max(dp[i][j-1],dp[i-1][j]);
+                }
+            }
+        }
+    }
+    return dp[n][n];
+    }
