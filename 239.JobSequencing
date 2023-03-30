@@ -1,0 +1,114 @@
+//good
+Method: priority_queue o(nlogn),o(n)
+#include<bits/stdc++.h>
+struct comp{
+bool operator()(Job a, Job b){
+    return a.profit<b.profit;
+}
+};
+bool comd(Job a, Job b){
+    return a.dead<b.dead;
+}
+vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        int no=0,result=0;
+        sort(arr,arr+n,comd);//sort in ascending order of deadline
+        priority_queue<Job,vector<Job>,comp>pq;//max heap containing max profit element among elementts with same deadline
+        int slot;
+        for(int i=n-1;i>=0;i--){
+            if(i==0){
+                slot=arr[i].dead;
+            }else{
+                slot=arr[i].dead-arr[i-1].dead;//these many jobs we can complete with same deadlines
+            }
+            pq.push(arr[i]);
+            while(slot>0&&pq.size()>0){
+                Job j=pq.top();
+                no++;
+                result+=j.profit;
+                pq.pop();
+                slot--;
+            }
+        }
+        vector<int>v;
+        v.push_back(no);
+        v.push_back(result);
+        return v;
+    } 
+Method:disjoint sets o(nlogd),o(d) where d is maximum deadline 
+bool comp(Job a, Job b){
+    return a.profit>b.profit;
+}
+class disjoint{
+    public:
+    int *v;
+    disjoint(int n){
+        v=new int[n+1];
+        for(int i=0;i<=n;i++){
+            v[i]=i;
+        }
+    }
+    int find(int s){
+        if(v[s]==s)
+        return s;
+        return v[s]=find(v[s]);
+    }
+    void merge(int a, int b){
+        v[a]=b;
+    }
+};
+int maxdead(Job arr[], int n){
+        int a=arr[0].dead;
+        for(int i=1;i<n;i++){
+            a=max(a,arr[i].dead);
+        }
+        return a;
+    }
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        sort(arr,arr+n,comp);
+        int ans=0;
+        int no=0;
+        int md=maxdead(arr,n);
+        disjoint ds(md);
+        for(int i=0;i<n;i++){
+            int as=ds.find(arr[i].dead);
+            if(as>0){
+                ans+=arr[i].profit;
+                no++;
+                ds.merge(as,as-1);
+            }
+        }
+        vector<int>v;
+        v.push_back(no);
+        v.push_back(ans);
+        return v;
+    }
+    Method:Greedy O(n^2), o(n)
+    bool comp(Job a, Job b){
+    return a.profit>b.profit;
+}
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+     sort(arr,arr+n,comp);
+     vector<bool>a(n,0);
+     int no=0,ans=0;
+     for(int i=0;i<n;i++){
+         int j=arr[i].dead-1;
+         if(arr[i].dead>=n){
+             j=n-1;
+         }
+        for(;j>=0;j--){
+            if(a[j]==0){
+                no++;
+                ans+=arr[i].profit;
+                a[j]=1;
+                break;
+            }
+        }
+     }
+       vector<int>an;
+       an.push_back(no);
+       an.push_back(ans);
+       return an;
+    } 
