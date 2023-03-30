@@ -1,0 +1,40 @@
+Method: recursive, Memoization o(n),o(n)
+int help(int N, int X, int Y,vector<int>&dp)
+	{
+		if(N==0||N==1||N==X||N==Y){
+		   return 1;
+		}
+		if(dp[N]!=-1)
+		return dp[N];
+		if(help(N-1,X,Y,dp)==0||(N-X>=0&&help(N-X,X,Y,dp)==0)||(N-Y>=0&&help(N-Y,X,Y,dp)==0))
+		return dp[N]=1;
+		return dp[N]=0;
+	}
+
+	int findWinner(int N, int X, int Y){
+	    vector<int>dp(N+1,-1);
+	return help(N,X,Y,dp);
+	}
+Method: dp o(n), o(n)
+int findWinner(int N, int X, int Y){
+	    vector<int>dp(N+1,1);
+	for(int i=0;i<=N;i++){
+	    if(i==0||i==1||i==X||i==Y){
+	        dp[i]=1;
+	    }else{
+	        int a=1,b=1;
+	        if(i-X>=0){
+	            a=dp[i-X];
+	        }
+	        if(i-Y>=0){
+	            b=dp[i-Y];
+	        }
+	        if(dp[i-1]==0||a==0||b==0){
+	            dp[i]=1;
+	        }else{
+	         dp[i]=0;   
+	        }
+	    }
+	}
+	return dp[N];
+	}
