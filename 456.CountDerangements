@@ -1,0 +1,40 @@
+Method: Recursive, memoization o(n), o(n)
+long int help(int N, vector<long int>&dp){
+        if(N==0||N==1)
+        return 0;
+        if(N==2)
+        return 1;
+        if(dp[N]!=-1)
+        return dp[N];
+        return dp[N]=(N-1)*(help(N-2,dp)%m+help(N-1,dp)%m)%m;
+    }
+    long int disarrange(int N){
+        vector<long int>dp(N+1,-1);
+        return help(N,dp);
+    }
+Method: DP o(n), o(n)
+long int disarrange(int N){
+        vector<long int>dp(N+1,0);
+        dp[0]=0;
+        dp[1]=0;
+        dp[2]=1;
+        for(int i=3;i<=N;i++){
+           dp[i]=(i-1)*(dp[i-2]%m+dp[i-1]%m)%m; 
+        }
+        return dp[N];
+    }
+Method: dp (space optimization)
+long int disarrange(int N){
+        if(N==0||N==1)
+        return 0;
+        if(N==2)
+        return 1;
+        int a=0,b=1;
+        int ans=0;
+        for(int i=3;i<=N;i++){
+           ans=(i-1)*(a%m+b%m)%m;
+           a=b;
+           b=ans;
+        }
+        return ans;
+    }
