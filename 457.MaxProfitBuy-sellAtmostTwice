@@ -1,0 +1,34 @@
+Method: DP o(n), o(n)
+int maxProfit(vector<int>&price){
+    vector<int>a(price.size(),0);
+    int n=price.size();
+    int ma=price[n-1],mi=price[0];
+    for(int i=n-2;i>=0;i--){
+        if(ma<price[i])
+        ma=price[i];
+        a[i]=max(a[i+1],ma-price[i]);
+    }
+    for(int i=1;i<n;i++){
+        if(mi>price[i])
+        mi=price[i];
+        a[i]=max(a[i-1],a[i]+price[i]-mi);
+    }
+    return a[n-1];
+}
+Method: iterative o(n), o(1)
+int maxtwobuysell(int arr[],int size) {
+    int first_buy = INT_MIN;
+      int first_sell = 0;
+      int second_buy = INT_MIN;
+      int second_sell = 0;
+       
+      for(int i=0;i<size;i++) {
+         
+          first_buy = max(first_buy,-arr[i]);
+          first_sell = max(first_sell,first_buy+arr[i]);//profit of first buy-sell //just like in dp
+          second_buy = max(second_buy,first_sell-arr[i]);
+          second_sell = max(second_sell,second_buy+arr[i]);/profit of second buy-sell
+    }
+     return second_sell;
+}
+
