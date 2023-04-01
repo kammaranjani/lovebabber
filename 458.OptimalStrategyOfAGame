@@ -1,0 +1,38 @@
+Method:Recursive, memoization o(n^2),o(n^2)
+    long long help(int arr[], int s, int n,vector<vector<long long>>&dp){
+        if(s==n)
+        return arr[s];
+        if(s>n)
+        return 0;
+        if(dp[s][n]!=-1)
+        return dp[s][n];
+        long long a=arr[s]+min(help(arr,s+2,n,dp),help(arr,s+1,n-1,dp));
+        long long b=arr[n]+min(help(arr,s+1,n-1,dp),help(arr,s,n-2,dp));
+        return dp[s][n]=max(a,b);
+    }
+    long long maximumAmount(int arr[], int n){
+    vector<vector<long long>>dp(n,vector<long long>(n,-1));
+    return help(arr,0,n-1,dp);
+    }
+Method: DP o(n^2), o(n^2) //upper triangle traversal in 2d //good
+long long maximumAmount(int arr[], int n){
+    vector<vector<long long>>dp(n,vector<long long>(n,0));
+    int k=0;
+    while(k<n){
+    for(int i=0,j=i+k;j<n;i++,j++){
+        if(i==j){
+        dp[i][j]=arr[i];
+        }
+        else if(j-i==1){
+            dp[i][j]=max(arr[i],arr[j]);
+            }
+            else{
+        long long a=arr[i]+min(dp[i+2][j],dp[i+1][j-1]);
+        long long b=arr[j]+min(dp[i+1][j-1],dp[i][j-2]);
+        dp[i][j]=max(a,b);
+        }
+    }
+    k++;
+    }
+    return dp[0][n-1];
+    }
