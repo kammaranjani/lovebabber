@@ -1,0 +1,148 @@
+Method:recursive, memoization o(n^2),o(n)
+#include<bits/stdc++.h>
+class Solution {
+public:
+class tri{
+    public:
+    int s;
+    int e;
+    int p;
+};
+struct comp{
+bool operator()(tri a, tri b){
+    return a.e<b.e;
+}
+};
+int chec(tri t[], int i){
+    for(int j=i-1;j>=0;j--){
+        if(t[j].e<=t[i-1].s){
+            return j;
+        }
+    }
+    return -1;
+}
+int help(tri t[], int n,vector<int>&dp){
+    if(n==0)
+    return 0;
+    if(n==1)
+    return t[n-1].p;
+    if(dp[n]!=-1)
+    return dp[n];
+    int inccheck=chec(t,n);
+    int incpro=t[n-1].p;
+    if(inccheck!=-1){
+    incpro+=help(t,inccheck+1,dp);
+    }
+    return dp[n]=max(incpro,help(t,n-1,dp));
+}
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        int n=startTime.size();
+        tri t[n];
+        for(int i=0;i<n;i++){
+        t[i].s=startTime[i];
+        t[i].e=endTime[i];
+        t[i].p=profit[i];
+        }
+        comp c;
+        sort(t,t+n,c);
+        vector<int>dp(n+1,-1);
+        return help(t,n,dp);       
+    }
+Method: DP o(n^2), o(n)
+class tri{
+    public:
+    int s;
+    int e;
+    int p;
+};
+struct comp{
+bool operator()(tri a, tri b){
+    return a.e<b.e;
+}
+};
+int chec(tri t[], int i){
+    for(int j=i-1;j>=0;j--){
+        if(t[j].e<=t[i-1].s){
+            return j;
+        }
+    }
+    return -1;
+}
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        int n=startTime.size();
+        tri t[n];
+        for(int i=0;i<n;i++){
+        t[i].s=startTime[i];
+        t[i].e=endTime[i];
+        t[i].p=profit[i];
+        }
+        comp c;
+        sort(t,t+n,c);
+        vector<int>dp(n+1,-1);
+        dp[0]=0;
+        dp[1]=t[0].p;
+        for(int i=2;i<=n;i++){
+            int inccheck=chec(t,i);
+            int incpro=t[i-1].p;
+    if(inccheck!=-1){
+    incpro+=dp[inccheck+1];
+    }
+    dp[i]=max(incpro,dp[i-1]);
+        }
+        return dp[n];
+    }
+Method: binary search o(nlogn), o(n)
+#include<bits/stdc++.h>
+class Solution {
+public:
+class tri{
+    public:
+    int s;
+    int e;
+    int p;
+};
+struct comp{
+bool operator()(tri a, tri b){
+    return a.e<b.e;
+}
+};
+int chec(tri t[], int i){
+    int st=0;
+    int en=i-1;
+    while(st<=en){
+    int mid=(st+en)/2;
+    if(t[mid].e<=t[i-1].s){
+    if(t[mid+1].e<=t[i-1].s)
+    st=mid+1;
+    else
+    return mid;
+    }
+    else
+    en=mid-1;
+    }
+    return -1;
+    
+}
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        int n=startTime.size();
+        tri t[n];
+        for(int i=0;i<n;i++){
+        t[i].s=startTime[i];
+        t[i].e=endTime[i];
+        t[i].p=profit[i];
+        }
+        comp c;
+        sort(t,t+n,c);
+        vector<int>dp(n+1,-1);
+        dp[0]=0;
+        dp[1]=t[0].p;
+        for(int i=2;i<=n;i++){
+            int inccheck=chec(t,i);
+            int incpro=t[i-1].p;
+    if(inccheck!=-1){
+    incpro+=dp[inccheck+1];
+    }
+    dp[i]=max(incpro,dp[i-1]);
+        }
+        return dp[n];
+    }
