@@ -1,0 +1,43 @@
+Method: recursion
+int sum(int freq[], int i, int j);
+int optCost(int freq[], int i, int j)
+{
+    if (j < i)  // no elements in this subarray
+        return 0;
+    if (j == i) // one element in this subarray
+        return freq[i];
+    int fsum = sum(freq, i, j);
+    int min = INT_MAX;
+    for (int r = i; r <= j; ++r)
+    {
+        int cost = optCost(freq, i, r - 1) +
+                   optCost(freq, r + 1, j);
+        if (cost < min)
+            min = cost;
+    }     
+    return min + fsum;
+}
+Method: dp //I practised this //o(n^3), o(n^2)
+int optimalCost(vector<int>& keys, vector<int>& freq, int n)
+{
+	vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+	for(int g=0;g<=n;g++){
+	for(int i=0,j=i+g;i<=n-g;i++,j++){
+		if(i==j){
+			dp[i][j]=0;
+		}
+		else if(j-i==1){
+			dp[i][j]=freq[j-1];
+		}
+		else{
+			int ans=INT_MAX,s=0;
+                        for (int k = i; k < j; k++) {
+                          ans = min(ans, dp[i][k] + dp[k + 1][j]);
+                          s += freq[k];
+                        }
+                        dp[i][j] = ans+s;
+                }
+        }
+        }
+return dp[0][n];
+}
