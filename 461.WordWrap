@@ -1,0 +1,56 @@
+Method: Recursive, Memoization. //my approach
+int help(vector<int>nums,int s, int n, int k, int li,vector<vector<int>>&dp){
+        if(s==n)
+        return 0;
+        if(dp[s][li]!=-1){
+            return dp[s][li];
+        }
+        if(li==0)
+        {
+        return dp[s][li]=help(nums,s+1,n,k,nums[s],dp);
+        }
+        if(li+1+nums[s]<=k){
+            int a=nums[s]+li+1;
+        return dp[s][li]=min(help(nums,s+1,n,k,a%k,dp),(k-li)*(k-li)+help(nums,s+1,n,k,nums[s],dp));
+        }
+        return dp[s][li]=(k-li)*(k-li)+help(nums,s+1,n,k,nums[s],dp);
+    }
+    int solveWordWrap(vector<int>nums, int k) 
+    { 
+        vector<vector<int>>dp(nums.size()+1,vector<int>(k+1,-1));
+        return help(nums,0,nums.size(),k,0,dp);
+    } 
+Method: Dp tabulation
+int solveWordWrap(vector<int>nums, int k) 
+    { 
+        int n=nums.size();
+        int spa[n][n],ls[n][n],c[n+1];
+        for(int i=0;i<n;i++){
+            spa[i][i]=k-nums[i];
+            for(int j=i+1;j<n;j++){
+                spa[i][j]=spa[i][j-1]-nums[j]-1;
+                
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=i;j<n;j++){
+                if(spa[i][j]<0){
+                    ls[i][j]=INT_MAX;
+                }
+                else if(spa[i][j]>=0&&j==n-1)
+                ls[i][j]=0;
+                else
+                ls[i][j]=spa[i][j]*spa[i][j];
+            }
+        }
+        c[0]=0;
+        for(int i=1;i<=n;i++){
+            c[i]=INT_MAX;
+            for(int j=1;j<=i;j++){
+                if(c[j-1]!=INT_MAX&&ls[j-1][i-1]!=INT_MAX&&c[j-1]+ls[j-1][i-1]<c[i]){
+                    c[i]=c[j-1]+ls[j-1][i-1];
+                }
+            }
+        }
+      return c[n];  
+    } 
