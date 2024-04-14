@@ -1,0 +1,19 @@
+Best:
+#include <bits/stdc++.h> 
+vector<int> separateNegativeAndPositive(vector<int> &nums){
+    int n= nums.size();
+    int l=0,h=n-1;
+    while(l<=h){
+        while(nums[l]<0&&l<n){
+            l++;
+            }
+        while(nums[h]>0&&h>=0) {
+            h--;
+        }
+        if(l<n&&h>=0&&l<h)
+            swap(nums[l],nums[h]);
+            else 
+            break;
+        }
+        return nums;
+}
