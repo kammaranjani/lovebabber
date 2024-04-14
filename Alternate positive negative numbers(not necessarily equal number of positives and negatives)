@@ -1,0 +1,36 @@
+Best: o(2n)
+vector<int> alternateNumbers(vector<int>&a) {
+  int n=a.size();
+  vector<int>pos,neg;
+  for(int i=0;i<n;i++){
+      if(a[i]>0){
+          pos.push_back(a[i]);
+      } else {
+          neg.push_back(a[i]);
+      }
+  }
+  int pn=pos.size(),nn=neg.size();
+  if(pn>nn){
+      for(int i=0;i<nn;i++){
+          a[2*i]=pos[i];
+          a[2*i+1]=neg[i];
+      }
+      int ind=2*nn;
+      for(int i=nn;i<pn;i++){
+          a[ind]=pos[i];
+          ind++;
+      }
+  } else {
+      for(int i=0;i<pn;i++){
+          a[2*i]=pos[i];
+          a[2*i+1]=neg[i];
+      }
+      int ind=2*pn;
+      for(int i=pn;i<nn;i++){
+          a[ind]=neg[i];
+          ind++;
+      }
+  }
+  return a;
+}
+
