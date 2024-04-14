@@ -1,0 +1,18 @@
+Better(will see in unequal number of positive and negative numbers)
+Best:o(n),o(n)
+vector<int> alternateNumbers(vector<int>&a) {
+    int negind=1, posind=0;
+    int n= a.size();
+    vector<int>ans(n,0);
+    for(int i=0;i<n;i++){
+        if(a[i]>0){
+            ans[posind]=a[i];
+            posind+=2;
+        }
+        else {
+          ans[negind]=a[i];
+          negind+=2;
+        }
+    }
+    return ans;
+}
