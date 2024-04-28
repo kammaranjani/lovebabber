@@ -16,10 +16,97 @@ unsorted: o(nlogn+mlogn),o(n+m)
         }
         return s.size();
     }
+sorted: o(n),o(m)
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> unio(vector<int>a,int n, vector<int>b,int m) {
+    vector<int> an;
+    int i=0,j=0,k=0;
+    while(i<n&&j<m) {
+        if(a[i]<b[j]) {
+            if(k!=0){
+                if(an.back()!=a[i]) {
+            an.push_back(a[i]);
+            k++;
+            } 
+            }else if(k==0){
+                an.push_back(a[i]);
+                k++;
+            }
+            i++;
+        }
+        else if(a[i]==b[j]) {
+            if(k!=0){
+                if(an.back()!=a[i]){
+            an.push_back(a[i]);
+            k++;
+            } 
+            }else if(k==0){
+                an.push_back(a[i]);
+                k++;
+            }
+            i++;
+            j++;
+        } else {
+            if(k!=0){
+            if(an.back()!=b[j]) {
+            an.push_back(b[j]);
+            k++;
+            }
+            }else if(k==0){
+                an.push_back(b[j]);
+                k++;
+            }
+            j++;
+        }
+    }
+    while(i<n ) {
+        if(k!=0){
+        if(an.back()!=a[i]){
+        an.push_back(a[i]);
+        k++;
+        }
+        }else {
+            an.push_back(a[i]); 
+            k++;
+        }
+        i++;
+    }
+    while(j<m) {
+          if(k!=0){
+        if(an.back()!=b[j]){
+        an.push_back(b[j]);
+        k++;
+        } else {
+            an.push_back(b[j]); 
+            k++;
+        }
+        j++;
+    }
+    }
+return an;
+}
 
 intersection:
 unsorted:
-create hashmap and if count of items is 2 
+vector<int> unio(vector<int>a,int n, vector<int>b,int m) {
+    unordered_map<int,int> us;
+    vector<int>ans;
+    int i=0;
+    for(int i=0;i<n;i++){
+            us[a[i]]++;
+    }
+    for(int i=0;i<m;i++){
+            us[b[i]]++;
+    }
+    for(auto i: us) {
+        if(i.second>1){
+            ans.push_back(i.first);
+        } 
+    }
+return ans;
+}
 sorted: 
 better: o(n*m),o(1)
 #include <bits/stdc++.h> 
