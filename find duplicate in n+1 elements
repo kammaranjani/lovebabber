@@ -1,0 +1,30 @@
+brute force: sort and find if next element is matching o(nlogn),o(1)
+better: o(n),o(n)
+  int findDuplicate(vector<int>& nums) {
+        int ans=0;
+        unordered_map<int,int>um;
+        int n= nums.size();
+        for(int i=0;i<n;i++){
+            if(um.count(nums[i])){
+                return nums[i];
+            }
+            um[nums[i]]++;
+        }
+      return -1;
+    }
+or take array with frequency for n+1 elements
+best: o(n),o(1) (floyd-cycle detection)
+    int findDuplicate(vector<int>& nums) {
+        int ans=0;
+        int slow=nums[0],fast=nums[0];
+        do {
+            fast = nums[nums[fast]];
+            slow = nums[slow];
+        } while(slow!=fast);
+        fast= nums[0];
+        while(fast!=slow){
+            fast = nums[fast];
+            slow = nums[slow];
+        }
+        return slow;
+    }
