@@ -1,0 +1,49 @@
+brute-force: o(n^2),o(1)
+each and every element from left to right if left ele > right ele count++. 
+best:o(nlogn),o(n)
+long long int merge(long long a[],int l, int mid, int h){
+    long long int temp[h-l+1];
+    int i=l,j=mid+1,k=0;
+    long long int cnt = 0; 
+    while(i<=mid&&j<=h){
+        if(a[i]<=a[j]){
+            temp[k]=a[i];
+            k++;
+            i++;
+        } else {
+            cnt+=(mid-i)+1;
+             temp[k]=a[j];
+            k++;
+            j++;
+        }
+    }
+    while(i<=mid){
+          temp[k]=a[i];
+            k++;
+            i++;
+    }
+     while(j<=h){
+          temp[k]=a[j];
+            k++;
+            j++;
+    } 
+    for(int x=l;x<=h;x++){
+        a[x] = temp[x-l];
+    }
+    return cnt;
+}
+long long int helperfun(long long arr[],int l, int h){
+   long long int cnt =0;
+   if(l>=h){
+       return cnt;
+   }
+   int mid =(l+h)/2;
+   cnt+=helperfun(arr,l,mid);
+   cnt+=helperfun(arr,mid+1,h);
+   cnt+=merge(arr,l,mid,h);
+   return cnt;
+}
+ long long int inversionCount(long long arr[], long long N)
+    {
+        return helperfun(arr,0,N-1);
+    }
