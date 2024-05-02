@@ -1,0 +1,39 @@
+bruteforce:same as best but instead of find(), we use linear search
+better:o(nlogn),o(1)
+int longestSuccessiveElements(vector<int>&a) {
+    int n=a.size();
+    if(n==0)
+    return 0;
+    sort(a.begin(),a.end());
+    int len=1,cmin=a[0],t=1;
+    for(int i=1;i<n;i++){
+      if(cmin!=a[i]&&(cmin+1==a[i])){
+          t++;
+          len=max(len,t);
+      } else if(cmin!=a[i]){
+          t=1;
+      }
+          cmin=a[i];
+      }
+    return len;
+}
+best:o(3n),o(n)
+int longestSuccessiveElements(vector<int>&a) {
+    int n=a.size(),len=0;
+    unordered_set<int>s;
+    for(int i=0;i<n;i++){
+        s.insert(a[i]);
+    }
+    for(auto it:s){
+        int t=0;
+        if(s.find(-1)==s.end()){
+        t=1;
+            while(s.find(it+1)!=s.end()){
+                t++;
+                it++;
+            }
+        }
+        len = max(len,t);
+    }
+    return len;
+}
