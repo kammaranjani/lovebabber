@@ -1,0 +1,56 @@
+basic:o(3*2*n),o(3*2*n)+o(n)
+int help(int i, int buy, int tra, vector<vector<vector<int>>>&dp,vector<int>prices, int n){
+    if(tra<=0||i==n)
+    return 0;
+    if(dp[i][buy][tra]!=-1)
+    return dp[i][buy][tra];
+    if(buy){
+        return dp[i][buy][tra]=max(-prices[i]+help(i+1,0,tra,dp,prices,n),help(i+1,1,tra,dp,prices,n));
+    } else {
+        return dp[i][buy][tra]=max(prices[i]+help(i+1,1,tra-1,dp,prices,n),help(i+1,0,tra,dp,prices,n));
+    }
+}
+int maxProfit(vector<int>& prices)
+{
+    int n= prices.size();
+    vector<vector<vector<int>>>dp(n, vector<vector<int>>(2,vector<int>(3,-1)));
+    return help(0,1,2,dp,prices,n);
+}
+better:o(2*2*n),o(2*2*n)
+int maxProfit(vector<int>& prices)
+{
+    int n= prices.size();
+    vector<vector<vector<int>>>dp(n+1, vector<vector<int>>(2,vector<int>(3,0)));
+    for(int i=n-1;i>=0;i--){
+        for(int j=0;j<=1;j++){
+            for(int k=1;k<=2;k++){
+                if(j){
+                   dp[i][j][k]=max(-prices[i]+dp[i+1][0][k],dp[i+1][1][k]);
+                  } else {
+                    dp[i][j][k]=max(prices[i]+dp[i+1][1][k-1],dp[i+1][0][k]);
+                }
+            }
+        }
+    }
+    return dp[0][1][2];
+}
+best:o(2*3*n),o(2*3)
+int maxProfit(vector<int>& prices)
+{
+    int n= prices.size();
+    vector<vector<int>>cur(2,vector<int>(3,0)),ahead(2,vector<int>(3,0));
+    for(int i=n-1;i>=0;i--){
+        for(int j=0;j<=1;j++){
+            for(int k=1;k<=2;k++){
+                 if(j){
+                      cur[j][k]=max(-prices[i]+ahead[0][k],ahead[1][k]);
+                      } else {
+                      cur[j][k]=max(prices[i]+ahead[1][k-1],ahead[0][k]);
+                      }
+            }
+        }
+        ahead = cur;
+    }
+    return ahead[1][2];
+}
+one more approach take n*4 and 4 shows transactions (b,s,b,s) so een index means buy is happening, odd index means sell based on that check in base if trans==4 return;
