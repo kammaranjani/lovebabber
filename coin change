@@ -1,0 +1,66 @@
+bruteforce:o(2^n),o(n)
+   long long help(int coins[], int N, int i, int sum) {
+        if(sum<0||i==N){
+            return 0;
+        }
+        if(sum==0){
+            return 1;
+        }
+        return help(coins,N,i,sum-coins[i])+help(coins,N,i+1,sum);
+         
+    }
+    long long int count(int coins[], int N, int sum) {
+    return help(coins,N,0,sum);
+    }
+basic:o(n*sum),o(n*sum)+o(n)
+    long long help(int coins[], int N, int i, int sum,vector<vector<long long>>&dp) {
+        if(sum<0||i==N){
+            return 0;
+        }
+        if(sum==0){
+            return 1;
+        }
+        if(dp[i][sum]!=-1){
+            return dp[i][sum];
+        }
+        return dp[i][sum]=help(coins,N,i,sum-coins[i],dp)+help(coins,N,i+1,sum,dp);
+    }
+    long long int count(int coins[], int N, int sum) {
+        vector<vector<long long>>dp(N,vector<long long>(sum+1,-1));
+    return help(coins,N,0,sum,dp);
+    }
+better:o(n*sum),o(n*sum)
+     long long int count(int coins[], int N, int sum) {
+        vector<vector<long long>>dp(N+1,vector<long long>(sum+1,0));
+        for(int i=N-1;i>=0;i--){
+            for(int j=0;j<=sum;j++){
+                if(j==0){
+                    dp[i][j]=1;
+                    continue;
+                }
+                dp[i][j]=dp[i+1][j];
+                if(j-coins[i]>=0){
+                    dp[i][j]+=dp[i][j-coins[i]];
+                }
+            }
+        }
+        return dp[0][sum];
+    }
+best:o(n*sum),o(n*sum)
+    long long int count(int coins[], int N, int sum) {
+        vector<long long>cur(sum+1,0),prev(sum+1,0);
+        for(int i=N-1;i>=0;i--){
+            for(int j=0;j<=sum;j++){
+                if(j==0){
+                    cur[j]=1;
+                    continue;
+                }
+                cur[j]=prev[j];
+                if(j-coins[i]>=0){
+                    cur[j]+=cur[j-coins[i]];
+                }
+            }
+            prev=cur;
+        }
+        return prev[sum];
+    }
