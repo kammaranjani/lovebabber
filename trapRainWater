@@ -1,0 +1,40 @@
+Bruteforce:o(3n or 2n),o(2n)
+ int trap(vector<int>& height) {
+        int n= height.size();
+        vector<int> l(n,0);
+        vector<int> r(n,0);
+        int lmax=0,rmax=0;
+        for(int i=0;i<n;i++){
+            lmax=max(lmax,height[i]);
+            rmax=max(rmax,height[n-i-1]);
+            l[i]=lmax;
+            r[n-i-1]=rmax;
+        }
+        int res=0;
+        for(int i=0;i<n;i++){
+         res+=min(l[i],r[i])-height[i];
+        }
+        return res;
+    }
+Best:o(n),o(1) (two pointer approach)
+   int trap(vector<int>& nums) 
+    {
+        int i =0;   int j = nums.size() - 1;
+        int left_max = nums[0]; int right_max = nums[j];
+        int res = 0;
+        while(i < j)
+        {
+            if(left_max <= right_max)
+            {
+                res += left_max - nums[i];
+                i++;
+                left_max = max(left_max, nums[i]);
+            }
+            else
+            {
+                res += right_max - nums[j];
+                j--;
+                right_max = max(right_max, nums[j]);
+            }
+        }
+        return res;
