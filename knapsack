@@ -1,0 +1,65 @@
+basic:o(n*w),o(n*w)+o(n)
+    int help(int W, int wt[], int val[], int n,int i,vector<vector<int>>&dp){
+        if(W<0){
+            return INT_MIN;
+        }
+        if(i==n){
+            if(W>=0){
+                return 0;
+            }
+        }
+        if(dp[W][i]!=-1){
+            return dp[W][i];
+        }
+        int t=help(W,wt,val,n,i+1,dp);
+        int ans=INT_MIN;
+        if(t!=INT_MIN){
+        ans=max(ans,t);
+        }
+        int a=help(W-wt[i],wt,val,n,i+1,dp);
+        if(a!=INT_MIN){
+        ans = max(ans,val[i]+a);
+        }
+        dp[W][i]=(ans==INT_MIN)?0:ans;
+        return dp[W][i];
+    }
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       vector<vector<int>>dp(W+1,vector<int>(n,-1));
+       return help(W,wt,val,n,0,dp);
+    }
+better:o(n*m),o(n*m)
+   int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       vector<vector<int>>dp(W+1,vector<int>(n+1,0));
+          for(int j=0;j<=W;j++){
+      for(int i=n-1;i>=0;i--){
+        int ans=0;
+        ans=max(ans,dp[j][i+1]);
+        if(j-wt[i]>=0){
+        int a=dp[j-wt[i]][i+1];
+        ans = max(ans,val[i]+a);
+        }
+        dp[j][i]=ans;
+      }
+    }
+    return dp[W][0];
+    }
+best:o(n*m),o(W)
+ int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       vector<int>cur(W+1,0),prev(W+1,0);
+      for(int i=n-1;i>=0;i--){
+    for(int j=0;j<=W;j++){
+        int ans=0;
+        ans=max(ans,prev[j]);
+        if(j-wt[i]>=0){
+        int a=prev[j-wt[i]];
+        ans = max(ans,val[i]+a);
+        }
+        cur[j]=ans;
+      }
+      prev=cur;
+    }
+    return cur[W];
+    }
