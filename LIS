@@ -1,0 +1,15 @@
+better:o(n^2),o(n)
+   int longestSubsequence(int n, int a[])
+    {
+       vector<int>dp(n,1);
+       int ma=dp[0];
+       for(int i=1;i<n;i++){
+           for(int j=0;j<i;j++){
+               if(a[j]<a[i]){
+                   dp[i]=max(dp[i],1+dp[j]);
+               }
+           }
+           ma=max(ma,dp[i]);
+       }
+       return ma;
+    }
