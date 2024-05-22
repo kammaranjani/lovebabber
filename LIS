@@ -1,3 +1,20 @@
+basic:
+int help(int prev, int cur, int n, int a[],vector<vector<int>>&dp){
+        if(cur==n||prev>=cur){
+            return 0;
+        }
+        if(dp[prev+1][cur]!=-1)
+        return dp[1+prev][cur];
+        if(prev==-1||a[prev]<a[cur]){
+            return dp[1+prev][cur]=max(1+help(cur,cur+1,n,a,dp),help(prev,cur+1,n,a,dp));
+        }
+        return dp[1+prev][cur]=help(prev,cur+1,n,a,dp);
+    }
+    int longestSubsequence(int n, int a[])
+    {
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+       return help(-1,0,n,a,dp);
+    }
 better:o(n^2),o(n)
    int longestSubsequence(int n, int a[])
     {
@@ -13,3 +30,4 @@ better:o(n^2),o(n)
        }
        return ma;
     }
+best:o(nlogn),o(n)
