@@ -1,0 +1,36 @@
+basic:
+  int help(int i, int n, vector<int>a,vector<int>dp){
+      if(i>=n)
+      return 0;
+      if(dp[i]!=-1){
+          return dp[i];
+      }
+     if(i+1<n){
+         return dp[i]=max(max(help(i+1,n,a,dp),a[i]+help(i+2,n,a,dp)),a[i]+a[i+1]+help(i+3,n,a,dp));
+     }
+     return dp[i]=max(help(i+1,n,a,dp),a[i]+help(i+2,n,a,dp));
+  }
+  int findMaxSum(vector<int>& a){
+      int n=a.size();
+      vector<int>dp(n,-1);
+     return help(0,n,a,dp);
+  }
+best:o(n),o(n)
+  int findMaxSum(vector<int>& a){
+      int n=a.size();
+      if(n==0)
+      return 0;
+      vector<int>dp(n+1,0);
+      dp[n-1]=a[n-1];
+      if(n==1){
+          return dp[0];
+      }
+      dp[n-2]=a[n-1]+a[n-2];
+     for(int i=n-3;i>=0;i--){
+     dp[i]=max(dp[i+1],a[i]+dp[i+2]);  
+          if(i+3<=n){
+         dp[i]=max(dp[i],a[i]+a[i+1]+dp[i+3]);
+     }
+     }
+     return dp[0];
+  }
