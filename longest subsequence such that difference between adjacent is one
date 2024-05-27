@@ -1,0 +1,26 @@
+better:o(n^2),o(n)
+   int longestSubseq(int n, vector<int> &a) {
+        vector<int>dp(n,1);
+        for(int i=1;i<n;i++){
+            for(int j=0;j<i;j++){
+                if((abs(a[j]-a[i])==1)&&(1+dp[j]>dp[i])){
+                    dp[i]=dp[j]+1;
+                }
+            }
+        }
+        int ans=0;
+        for(int i=0;i<n;i++){
+            ans= max(ans,dp[i]);
+        }
+        return ans;
+    }
+best:o(n),o(n)
+ int longestSubseq(int n, vector<int> &a) {
+        unordered_map<int,int>um;
+        int an=1;
+        for(int i=0;i<n;i++){
+            um[a[i]]=1+max(um[a[i]-1],um[a[i]+1]);
+            an=max(an,um[a[i]]);
+        }
+        return an;
+    }
