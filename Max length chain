@@ -1,0 +1,66 @@
+basic:
+   int help(int i,vector<pair<int,int>>v,int n, int li,vector<int>dp){
+       if(i==n){
+           return 0;
+       }
+       if(dp[i]!=-1){
+           return dp[i];
+       }
+       if(v[i].first>li){
+           return dp[i]=max(1+help(i+1,v,n,v[i].second,dp),help(i+1,v,n,li,dp));
+       }
+       return dp[i]=help(i+1,v,n,li,dp);
+   }
+    int maxChainLen(struct val p[],int n){
+        vector<pair<int,int>>v;
+        for(int i=0;i<n;i++){
+            v.push_back(make_pair(p[i].first,p[i].second));
+        }
+        sort(v.begin(),v.end());
+        vector<int>dp(n,-1);
+        return help(0,v,n,-1,dp);
+    }
+better:o(n^2),o(n^2) (same as LIS all approaches)
+int maxChainLen(struct val p[],int n){
+        vector<pair<int,int>>v;
+        int ma=0;
+        for(int i=0;i<n;i++){
+            v.push_back(make_pair(p[i].first,p[i].second));
+            ma=max(ma,v[i].second);
+        }
+        sort(v.begin(),v.end());
+        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+        for(int i=n-1;i>=0;i--){
+            for(int j=i-1;j>=-1;j--) {
+             if(j==-1||v[i].first>v[j].second){
+           dp[i][1+j]=max(1+dp[i+1][i+1],dp[i+1][j+1]);
+       } else {
+        dp[i][j+1]=dp[i+1][j+1];
+        }
+            }
+        }
+        return dp[0][0];
+    }
+best:greedy o(n),o(1)
+static bool comp(const pair<int,int> &a,const pair<int,int> &b){
+    return a.second<b.second;
+}
+    int maxChainLen(struct val p[],int n){
+        vector<pair<int,int>>v;
+        for(int i=0;i<n;i++){
+            v.push_back(make_pair(p[i].first,p[i].second));
+        }
+        sort(v.begin(),v.end(),comp);
+        int c=1,i=0,j=1;
+        while(j<n){
+            if(v[j].first>v[i].second){
+                c++;
+                i=j;
+                j++;
+            } else {
+                j++;
+            }
+        }
+        return c;
+    }
+
