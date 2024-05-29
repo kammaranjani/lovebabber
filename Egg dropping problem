@@ -1,0 +1,80 @@
+basic:
+  int eggDrop(int n, int k) 
+    {
+        if(k==0||n==0)
+        return 0;
+        if(k==1)
+        return 1;
+        if(n==1)
+        return k;
+        int ans=INT_MAX;
+        for(int i=1;i<=k;i++){
+            int t= max(eggDrop(n,k-i),eggDrop(n-1,i-1));
+            ans=min(ans,t);
+        }
+        return ans+1;
+    }
+better:o(n*k*k),o(n*k)
+ int eggDrop(int n, int k) 
+    {
+        if(k==0||n==0)
+        return 0;
+        if(k==1)
+        return 1;
+        if(n==1)
+        return k;
+        vector<vector<int>>dp(n+1,vector<int>(k+1,0));
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=k;j++){
+                if(j==1){
+                    dp[i][j]=1;
+                    continue;
+                }
+                if(i==1){
+                    dp[i][j]=j;
+                    continue;
+                }
+                int ans=INT_MAX;
+                for(int l=1;l<=j;l++){
+                int t= max(dp[i][j-l],dp[i-1][l-1]);
+                ans=min(ans,t);
+                 }
+                dp[i][j]=ans+1;
+            }
+        }
+        return dp[n][k];
+    }
+best:o(n*k^2),o(k)
+  int eggDrop(int n, int k) 
+    {
+        if(k==0||n==0)
+        return 0;
+        if(k==1)
+        return 1;
+        if(n==1)
+        return k;
+        vector<int>cur(k+1,0),prev(k+1,0);
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=k;j++){
+                if(j==1){
+                    cur[j]=1;
+                    continue;
+                }
+                if(i==1){
+                    cur[j]=j;
+                    continue;
+                }
+                int ans=INT_MAX;
+                for(int l=1;l<=j;l++){
+                int t= max(cur[j-l],prev[l-1]);
+                ans=min(ans,t);
+                 }
+                cur[j]=ans+1;
+            }
+            prev=cur;
+        }
+        return prev[k];
+    }
+
+
+
