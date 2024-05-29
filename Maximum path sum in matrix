@@ -1,0 +1,41 @@
+basic:
+   int help(int i, int j, int n, vector<vector<int>> Matrix,vector<vector<int>>dp) {
+        if(i==n||j==n||i<0||j<0){
+            return 0;
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        return dp[i][j]=max(help(i+1,j,n,Matrix,dp),max(help(i+1,j+1,n,Matrix,dp),help(i+1,j-1,n,Matrix,dp)))+Matrix[i][j];
+    }
+    int maximumPath(int N, vector<vector<int>> Matrix)
+    {
+        vector<vector<int>>dp(N,vector<int>(N,-1));
+        int ans=0;
+        for(int j=0;j<N;j++){
+         ans=max(ans,help(0,j,N, Matrix,dp));
+        }
+        return ans;
+    }
+better:o(n^2),o(n^2)
+ int maximumPath(int N, vector<vector<int>> Matrix)
+    {
+        vector<vector<int>>dp(N+1,vector<int>(N+1,0));
+        int ans=0;
+        
+        for(int j=0;j<N;j++){
+            dp[0][j]=Matrix[0][j];
+        }
+        
+        for(int i= N-1;i>=0;i--){
+            for(int j=0;j<N;j++){
+                
+                dp[i][j]=max(dp[i+1][j],dp[i+1][j+1])+Matrix[i][j];
+                if(j-1>=0)
+                dp[i][j]=max(dp[i][j],dp[i+1][j-1]+Matrix[i][j]);
+                if(i==0)
+            ans=max(ans,dp[0][j]);
+            }
+        }
+        return ans;
+    }
