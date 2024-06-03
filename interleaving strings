@@ -1,0 +1,51 @@
+basic:
+ bool help(string a, string b, string c, int i, int j, int k, int an, int bn, int cn){
+        if(k==cn){
+            if(i==an&&j==bn)
+            return 1;
+            else
+            return 0;
+        }
+        return (a[i]==c[k]&&help(a,b,c,i+1,j,k+1,an,bn,cn))||
+        (b[j]==c[k]&&help(a,b,c,i,j+1,k+1,an,bn,cn));
+
+    }
+    bool isInterleave(string A, string B, string C) 
+    {
+        int an=A.size(),bn=B.size(), cn=C.size();
+        return help(A,B,C,0,0,0,an,bn,cn);
+    }
+best:o(n*m),o(n*m)
+ bool isInterleave(string A, string B, string C) 
+    {
+        int an=A.size(),bn=B.size(),cn=C.size();
+        if((an+bn)!=cn)
+         return 0;
+        vector<vector<int>>dp(an+1,vector<int>(bn+1,0));
+        for(int i=0;i<=an;i++){
+            for(int j=0;j<=bn;j++){
+                if(i==0 && j==0){
+                    dp[i][j]=1;
+                    continue;
+                }
+                else if(i==0){
+                    if(B[j-1]==C[j-1])
+                    dp[i][j]=dp[i][j-1];
+                }
+                else if(j==0){
+                    if(A[i-1]==C[i-1])
+                    dp[i][j]=dp[i-1][j];
+                }
+                else if(A[i-1]==C[i+j-1]&&B[j-1]!=C[i+j-1]){
+                    dp[i][j]=dp[i-1][j];
+                }
+                else if(A[i-1]!=C[i+j-1]&&B[j-1]==C[i+j-1]){
+                    dp[i][j]=dp[i][j-1];
+                }
+                else if(A[i-1]==C[i+j-1]&&B[j-1]==C[i+j-1]){
+                    dp[i][j]=dp[i-1][j]||dp[i][j-1];
+                }
+                }
+            }
+            return dp[an][bn];
+    }
