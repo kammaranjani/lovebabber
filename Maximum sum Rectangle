@@ -1,0 +1,25 @@
+best:o(n^3),o(n^3)
+  int kadane(vector<int>ans,int c){
+      int a=INT_MIN,t=0;
+      for(int i=0;i<c;i++){
+          if(t<0){
+              t=0;
+          }
+          t+=ans[i];
+          a=max(a,t);
+      }
+      return a;
+  }
+    int maximumSumRectangle(int R, int C, vector<vector<int>> M) {
+        int ma=INT_MIN;
+        for(int i=0;i<R;i++){
+            vector<int>ans(C,0);
+            for(int j=i;j<R;j++){
+                for(int k=0;k<C;k++){
+                    ans[k]+=M[j][k];
+                }
+                ma=max(ma,kadane(ans,C));
+            }
+        }
+        return ma;
+    }
