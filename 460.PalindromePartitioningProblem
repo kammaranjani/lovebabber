@@ -46,3 +46,37 @@ int palindromicPartition(string str)
         }
         return dp[0][n-1];
     }
+
+another:
+basic:
+  bool isParPos(int i,int j, string s){
+        for(int l=i,k=j;l<k;l++,k--){
+            if(s[l]!=s[k]){
+                return false;
+            }
+        }
+        return true;
+    }
+    int help(int i, int n,string str,vector<int>&dp){
+        if(i==n){
+            return 0;
+        }
+        if(dp[i]!=-1)
+        return dp[i];
+        int ans=INT_MAX;
+        for(int x=i;x<n;x++){
+                if(isParPos(i,x,str)){
+                    ans=min(ans,1+help(x+1,n,str,dp));
+                }
+        }
+        return dp[i]=ans;
+    }
+    int palindromicPartition(string str)
+    {
+        int n=str.size();
+        if(isParPos(0,n-1,str))
+        return 0;
+        vector<int>dp(n,-1);
+    return help(0,n,str,dp)-1;
+    }
+for printing those strings we use backtracking see takeuForward(L17. Palindrome Partitioning | Leetcode | Recursion | C++ | Java)
