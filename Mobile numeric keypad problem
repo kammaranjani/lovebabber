@@ -1,0 +1,48 @@
+Basic:
+    long long help(vector<vector<int>>keyp, int i, int j, int n,vector<vector<long long>>dp) {
+        if(n<=0||i<0||j<0||i>=4||j>=3||keyp[i][j]==-1){
+            return 0;
+        }
+        if(n==1){
+            return 1;
+        }
+        if(dp[keyp[i][j]][n]!=-1){
+            return dp[keyp[i][j]][n];
+        }
+        return dp[keyp[i][j]][n]=help(keyp,i,j,n-1,dp)+help(keyp,i+1,j,n-1,dp)+help(keyp,i-1,j,n-1,dp)+
+        help(keyp,i,j-1,n-1,dp)+help(keyp,i,j+1,n-1,dp);
+    }
+    long long getCount(int n) {
+        int ans=0;
+        vector<vector<int>>keyp = { {1,2,3},{4,5,6},{7,8,9},{-1,0,-1} };
+        vector<vector<long long>>dp(10,vector<long long>(n+1,-1));
+        for(int i=0;i<4;i++){
+            for(int j=0;j<3;j++){
+            ans+=help(keyp,i,j,n,dp);
+            }
+        }
+        return ans;
+    }
+Best:o(n),o(n)
+  long long getCount(int n) {
+        vector<vector<long long>>dp(n+1,vector<long long>(10,0));
+        vector<vector<long long>>numbers = { {0,8}, {1,2,4}, {2,1,3,5}, {3,2,6}, 
+        {4,1,5,7}, {5,2,4,6,8}, {6,3,5,9}, {7,4,8}, {8,5,7,0,9}, {9,6,8} };
+        long long ans=0;
+        for(int i=1;i<=n;i++){
+            for(int j=0;j<10;j++){
+                int ln=numbers[j].size();
+                if(i==1){
+                    dp[i][j]=1;
+                } else {
+                for(int k=0;k<ln;k++){
+                dp[i][j]+= dp[i-1][numbers[j][k]];
+                }
+                }
+                if(i==n){
+                ans+=dp[i][j];
+                }
+            }
+        }
+        return ans;
+    }
