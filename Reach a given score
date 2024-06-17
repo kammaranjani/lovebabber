@@ -1,0 +1,40 @@
+basic:
+   long long int help(int n,int i,vector<int>arr,vector<vector<long long int>>dp) {
+        if(i==3){
+        if(n==0){
+            return 1;
+        }
+        }
+        if(n<0||i==3){
+            return 0;
+        }
+        if(dp[n][i]!=-1){
+            return dp[n][i];
+        }
+        return dp[n][i]=help(n-arr[i],i,arr,dp)+help(n,i+1,arr,dp);
+    }
+    long long int count(long long int n)
+    {
+        vector<vector<long long int>>dp(n+1,vector<long long int>(3,-1));
+    	vector<int>arr = {3,5,10};
+    	return help(n,0,arr,dp);
+    }
+best:o(n),o(n)
+ long long int count(long long int n)
+    {
+        vector<long long int>cur(n+1,0),pre(n+1,0);
+    	vector<int>arr = {3,5,10};
+    	    for(int j=1;j<=3;j++) {
+    	for(int i=0;i<=n;i++) {
+    	        if(i==0){
+    	            cur[i]=1;
+    	            continue;
+    	        }
+    	       cur[i]=pre[i];
+    	        if(i>=arr[j-1])
+    	        cur[i] += cur[i-arr[j-1]];
+    	    }
+    	    pre=cur;
+    	}
+    	return pre[n];
+    }
