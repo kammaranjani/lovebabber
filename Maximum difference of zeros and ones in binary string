@@ -1,0 +1,22 @@
+best:o(n),o(n)
+int help(vector<int>arr, int n){
+   int ans=0,t=0;
+   for(int i=0;i<n;i++){
+       t+=arr[i];
+       ans=max(t,ans);
+       if(t<0){
+           t=0;
+       }
+   }
+   return ans;
+}
+	int maxSubstring(string S)
+	{
+	    int n= S.size();
+	    vector<int>arr(n,0);
+	      for(int i=0;i<n;i++){
+	        arr[i]=S[i]=='0'?1:-1;
+	    }
+	    int b=help(arr,n);
+	    return b==0?-1:b;
+	}
