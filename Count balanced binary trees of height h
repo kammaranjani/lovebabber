@@ -1,0 +1,13 @@
+better:o(n),o(n)
+   long long int countBT(int h) { 
+        vector<long long>dp(h+1,0);
+        long long m= 1e9+7;
+        dp[0]=1;
+        dp[1]=1;
+        for(int i=2;i<=h;i++){
+        long long t1=dp[i-1]%m;
+        long long t2=dp[i-2]%m;
+        dp[i]=((t1*t1)%m + (2*t2*t1)%m)%m;
+        }
+        return dp[h];
+    }
