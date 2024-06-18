@@ -1,0 +1,74 @@
+basic:
+int mod = 1003;
+    int help(int i, int j, bool ist, string s) {
+        if(i>j) {
+            return 0;
+        } if(i==j) {
+            if(ist) {
+                return s[i]=='T';
+            } else {
+                return s[i]=='F';
+            }
+        }
+        int ways=0;
+        for(int ind=i+1;ind<=j-1;ind+=2) {
+            int lt=help(i,ind-1,1,s);
+            int lf=help(i,ind-1,0,s);
+            int rt=help(ind+1,j,1,s);
+            int rf=help(ind+1,j,0,s);
+            if(s[ind]=='|') {
+                if(ist){
+                 ways= (ways+(lt*rt)%mod+(lt*rf)%mod+(lf*rt)%mod)%mod;   
+                } else {
+                    ways=(ways+(lf*rf)%mod)%mod;
+                }
+            } else if(s[ind]=='&') {
+                  if(ist){
+                 ways=(ways+(lt*rt)%mod)%mod;   
+                } else {
+                    ways=(ways+(lf*rt)%mod+(lt*rf)%mod+(lf*rf)%mod)%mod;
+                }
+            } else if(s[ind]=='^') {
+                if(ist) {
+                    ways=(ways+(lf*rt)%mod+(lt*rf)%mod)%mod;
+                } else {
+                    ways=(ways+(lt*rt)%mod+(lf*rf)%mod)%mod;
+                }
+            }
+        }
+        return ways;
+    }
+    int countWays(int n, string s){
+        return help(0,n-1,1,s);
+    }
+best:o(n*n*2*n),o(n*n*2)
+    int countWays(int n, string s){
+        vector<vector<vector<int>>>dp(n,vector<vector<int>>(n,vector<int>(2,0)));
+        for(int i=n-1;i>=0;i--) {
+            for(int j=i;j<n;j++) {
+                if(i==j){
+                    dp[i][j][0]=(s[i]=='F');
+                    dp[i][j][1]=(s[i]=='T');
+                } else {
+                     for(int ind=i+1;ind<=j-1;ind+=2) {
+            int lt=dp[i][ind-1][1];
+            int lf=dp[i][ind-1][0];
+            int rt=dp[ind+1][j][1];
+            int rf=dp[ind+1][j][0];
+            if(s[ind]=='|') {
+                 dp[i][j][1] = (dp[i][j][1]+(lt*rt)%mod+(lt*rf)%mod+(lf*rt)%mod)%mod;   
+                 dp[i][j][0] = (dp[i][j][0]+(lf*rf)%mod)%mod;
+            } else if(s[ind]=='&') {
+                 dp[i][j][1]=(dp[i][j][1]+(lt*rt)%mod)%mod;   
+                dp[i][j][0]=(dp[i][j][0]+(lf*rt)%mod+(lt*rf)%mod+(lf*rf)%mod)%mod;
+            } else if(s[ind]=='^') {
+                    dp[i][j][1]=(dp[i][j][1]+(lf*rt)%mod+(lt*rf)%mod)%mod;
+                    dp[i][j][0]=(dp[i][j][0]+(lt*rt)%mod+(lf*rf)%mod)%mod;
+                }
+            }
+        }
+            }
+        }
+        return dp[0][n-1][1];
+    }
+
