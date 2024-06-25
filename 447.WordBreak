@@ -63,6 +63,23 @@ Method: DP o(B.size()*A.size()*A.size()),o(A.size())
     }
     return dp[n-1]>0?1:0;
     }
+or****************
+  int help(int i, int sn,string s,unordered_map<string,int>um) {
+        if(i==sn){
+            return 1;
+        }
+        string temp="";
+        for(int j=i;j<sn;j++){
+            temp+=s[j];
+            if(um.count(temp)&&help(j+1,sn,s,um)){
+                return 1;
+            }
+        }
+        return 0;
+    }
+********************
+a different problem
+
 Method: Dp(space optimization) o(n*sumofelements), o(sumofelements)
  bool help(int n, int arr[], int s){
         vector<int>prev(s+1,0),cur(s+1,0);
