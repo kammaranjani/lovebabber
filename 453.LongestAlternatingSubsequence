@@ -29,4 +29,21 @@ Method: iterative o(n),o(1)
 		  }
 		  return max(ma,mi);
 		}
+basic:
+  int help(int prev, vector<int>nums, int i, int n, bool isg) {
+	        if(i==n){
+	            return 0;
+	        }
+	        if((isg&&(prev==-1||nums[prev]<nums[i]))||(!isg&&(prev==-1||nums[prev]>nums[i]))) {
+	            return 1+help(i,nums,i+1,n,!isg);
+	        } else {
+	            return help(prev,nums,i+1,n,isg);
+	        }
+	    }
+		int AlternatingaMaxLength(vector<int>&nums){
+		    int n= nums.size();
+		     return help(-1,nums,0,n,0);
+		}
+
+
     
