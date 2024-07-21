@@ -1,0 +1,83 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+#define R 12
+#define C 10
+
+bool getLa(int mat[R][C],vector<vector<bool>>&vis, int i, int j, int &ans, int temp){
+    if(i>=R||j>=C||i<0||j<0||vis[i][j]||mat[i][j]==0||mat[i][j]==-1){
+        return false;
+    }
+    if(j==C-1){
+        ans= min(ans,temp);
+        return true;
+    }
+    vis[i][j]=1;
+    temp++;
+    bool tans=false;
+    bool tans0=getLa(mat,vis,i+1,j,ans,temp);
+    bool tans1=getLa(mat,vis,i-1,j,ans,temp);
+    bool tans2=getLa(mat,vis,i,j+1,ans,temp);
+    bool tans3=getLa(mat,vis,i,j-1,ans,temp);
+    tans= tans0||tans1||tans2||tans3;
+    vis[i][j]=0;
+    return tans;
+}
+void markLa(int mat[R][C], vector<vector<bool>>&vis, int i, int j){
+    int r[4] = {0,1,0,-1};
+    int c[4] = {1,0,-1,0};
+    for(int k=0;k<4;k++){
+         if(i+r[k]<0||j+c[k]<0||i+r[k]>=R||j+c[k]>=C||mat[i+r[k]][j+c[k]]==-1||mat[i+r[k]][j+c[k]]==0){
+            continue;
+         }
+        mat[i+r[k]][j+c[k]]=-1;
+    }
+}
+void findShortestPath(int mat[R][C])
+{
+vector<vector<bool>>vis(R, vector<bool>(C,0));
+for(int i=0;i<R;i++){
+    for(int j=0;j<C;j++){
+        if(mat[i][j]==0){
+            markLa(mat, vis, i, j);
+        }
+    }
+}
+int tans=INT_MAX;
+for(int i=0;i<R;i++){
+    if(mat[i][0]==1){
+        int ans=INT_MAX;
+        int temp=0;
+        if(getLa(mat,vis,i,0,ans,temp)){
+            tans= min(tans, ans);
+        }
+    }
+}
+cout<<tans<<endl;
+}
+
+// Driver code
+int main()
+{
+	// input matrix with landmines shown with number 0
+	int mat[R][C] =
+	{
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 },
+		{ 1, 0, 1, 1, 1, 1, 1, 1, 0, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 0, 1, 1, 1, 1, 0, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 0, 1, 1, 1, 1, 1, 1 }
+	};
+
+	// find shortest path
+	findShortestPath(mat);
+
+	return 0;
+}
