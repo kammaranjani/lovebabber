@@ -1,0 +1,69 @@
+less optimized:
+  bool canPartitionKSubsetsHelper(int a[], int n, int k, int need,int sum, vector<bool>&vis) {
+            if(k==0){
+                return 1;
+            }
+            if(sum>need){
+                return 0;
+            }
+            if(sum==need){
+                return canPartitionKSubsetsHelper(a,n,k-1,need,0,vis);
+            }
+        for(int l=0;l<n;l++){
+            if(!vis[l]){
+        vis[l]=1;
+        if(canPartitionKSubsetsHelper(a,n,k,need,sum+a[l],vis)){
+            return 1;
+        }
+        vis[l]=0;
+        }
+        }
+          return 0; 
+		return true; 
+    }
+    bool isKPartitionPossible(int a[], int n, int k)
+    {
+         int s=0;
+         for(int i=0;i<n;i++){
+             s+=a[i];
+         }
+         if(n<k||s%k!=0){
+             return 0;
+         }
+        vector<bool>vis(n,0);
+         return canPartitionKSubsetsHelper(a,n,k,s/k,0,vis);
+    }
+Method 2: more optimized
+    bool canPartitionKSubsetsHelper(int a[], int n, int k, int need,int sum, vector<bool>&vis,int ind) {
+            if(k==0){
+                return 1;
+            }
+            if(sum>need){
+                return 0;
+            }
+            if(sum==need){
+                return canPartitionKSubsetsHelper(a,n,k-1,need,0,vis,0);
+            }
+        for(int l=ind;l<n;l++){
+            if(!vis[l]){
+        vis[l]=1;
+        if(canPartitionKSubsetsHelper(a,n,k,need,sum+a[l],vis,l+1)){
+            return 1;
+        }
+        vis[l]=0;
+        }
+        }
+          return 0; 
+    }
+    bool isKPartitionPossible(int a[], int n, int k)
+    {
+         int s=0;
+         for(int i=0;i<n;i++){
+             s+=a[i];
+         }
+         if(n<k||s%k!=0){
+             return 0;
+         }
+        vector<bool>vis(n,0);
+         return canPartitionKSubsetsHelper(a,n,k,s/k,0,vis,0);
+    }
