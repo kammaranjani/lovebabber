@@ -1,0 +1,59 @@
+bruteforce:o(n)*o(n!),o(n)
+#include <bits/stdc++.h>
+using namespace std;
+void help(string str, vector<string>&ans,int i, int n) {
+    if(i>=n){
+    ans.push_back(str);
+    return;
+    }
+    for(int j=i;j<=n;j++){
+        swap(str[i],str[j]);
+        help(str,ans,i+1,n);
+        swap(str[i],str[j]);
+    }
+}
+string findKthPermutation(int n, int k) {
+string str="";
+for(int i=1;i<=n;i++){
+    str.push_back(i + '0');
+}
+vector<string>ans;
+help(str,ans,0,n-1);
+sort(ans.begin(), ans.end());
+return ans[k-1];
+}
+
+int main() {
+    int n = 3, k = 4;
+    string kth_perm_seq = findKthPermutation(n, k);
+    cout << kth_perm_seq << endl;
+    return 0;
+}
+method 2:o(n^2),o(n) (strivers)
+void help(string str, string &ans, int n, int fact, int k) {
+  k=k-1;
+  int a=fact/n;
+  int pos=k%n;
+  while(true){
+  ans=ans+str[k/fact];
+  str.erase(str.begin()+k/fact);
+  if(str==""){
+    break;
+  }
+  k=k%fact;
+  fact/=str.size();
+  }
+}
+string findKthPermutation(int n, int k) {
+string str="";
+int fact = 1;
+for(int i=1;i<n;i++){
+    fact*=i;
+    str.push_back(i + '0');
+}
+str.push_back(n+'0');
+string ans="";
+help(str,ans,n,fact,k);
+return ans;
+}
+
