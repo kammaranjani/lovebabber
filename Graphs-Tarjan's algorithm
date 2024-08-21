@@ -1,0 +1,54 @@
+#include <iostream>
+#include<bits/stdc++.h>
+using namespace std;
+void dfs(int i, vector<vector<int>>&adj, stack<int>&s, vector<bool>& instack, vector<int>& low, vector<int>& disc) {
+    static int time =0;
+    low[i]=disc[i]=time;
+    time+=1;
+    s.push(i);
+    instack[i]=1;
+    for(auto j: adj[i]){
+        if(disc[j]==-1){
+            dfs(j,adj,s,instack,low, disc);
+            low[i]=min(low[i],low[j]);
+        } else if(instack[j]){
+            low[i]=min(low[i],disc[j]);
+        }
+    }
+    if(disc[i]==low[i]){
+    while(s.top()!=i){
+        cout<<s.top()<<" ";
+        instack[s.top()]=0;
+        s.pop();
+    }
+    cout<<s.top()<<endl;
+    instack[s.top()]=0;
+    s.pop();
+    }
+}
+void findTarjan(vector<vector<int>>&adj, int n, int m) {
+    stack<int>s;
+    vector<bool>instack(n,0);
+    vector<int>low(n,-1);
+    vector<int>disc(n,-1);
+    for(int i=0;i<n;i++){
+        if(disc[i]==-1){
+        dfs(i,adj,s,instack,low,disc);
+        }
+    }
+}
+int main() {
+    int n=7, m=9;
+    vector<vector<int>>adj(n);
+    adj[0].push_back(1);
+    adj[1].push_back(2);
+    adj[1].push_back(3);
+    adj[3].push_back(4);
+    adj[4].push_back(0);
+    adj[4].push_back(5);
+    adj[4].push_back(6);
+    adj[5].push_back(6);
+    adj[6].push_back(5);
+    findTarjan(adj,n,m);
+    return 0;
+}
