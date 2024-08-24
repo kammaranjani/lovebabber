@@ -1,0 +1,54 @@
+method 1:
+ void dfs(int src, vector<vector<pair<int,int>>>&edg,vector<bool>&vis, int dst, int k, int &tcost, int cost){
+        if(k<0)
+        return;
+        if(src==dst){
+            tcost=min(tcost, cost);
+            return;
+        }
+        vis[src]=1;
+        for(auto p:edg[src]){
+            if(!vis[p.first]&&cost+p.second<=tcost){
+            dfs(p.first,edg,vis,dst,k-1,tcost,cost+p.second);
+            }
+        }
+        vis[src]=0;
+    }
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+         vector<vector<pair<int,int>>>edg(n);
+        for(int i=0;i<flights.size();i++) {
+            edg[flights[i][0]].push_back(make_pair(flights[i][1],flights[i][2]));
+        }
+        vector<bool>vis(n,0);
+        int fare=INT_MAX;
+        dfs(src,edg,vis,dst,k+1,fare,0);
+        return fare==INT_MAX?-1:fare;
+    }
+method:2
+int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<pair<int,int>>edg[n];
+        for(int i=0;i<flights.size();i++) {
+            edg[flights[i][0]].push_back(make_pair(flights[i][1],flights[i][2]));
+        }
+        queue<pair<int,pair<int,int>>>q;
+        vector<int>dist(n,INT_MAX);
+        dist[src]=0;
+        q.push({0,{src,0}});
+        while(q.size()){
+            auto top=q.front();
+            q.pop();
+            int stops=top.first; 
+            int node = top.second.first;
+            int cost = top.second.second;
+            if(stops>k){
+                continue;
+            }
+            for(int i=0;i<edg[node].size();i++){
+                if(cost+edg[node][i].second<dist[edg[node][i].first]&&stops<=k) 
+                dist[edg[node][i].first]=cost+edg[node][i].second;
+                q.push({stops+1,{edg[node][i].first,cost+edg[node][i].second}});
+            }
+        }
+        return dist[dst]==INT_MAX?-1:dist[dst];
+    }
+
