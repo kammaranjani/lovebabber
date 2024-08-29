@@ -1,0 +1,52 @@
+method:1
+#include <iostream>
+#include<bits/stdc++.h>
+using namespace std;
+void dfs(int i, vector<int>&ind,vector<int>&out, vector<int>adj[]) {
+	static int timer=0;
+	ind[i]=timer++;
+	for(auto j: adj[i]) {
+		if(ind[j]==-1){
+			dfs(j,ind,out,adj);
+		}
+	}
+	out[i]=timer++;
+}
+bool check(int ma, int su, vector<int>&ind, vector<int>&out) {
+if(ind[ma]<ind[su]&&out[ma]>out[su])
+return true;
+return false;
+}
+int main() {
+	int n;
+	cin >> n;   
+	int s,d;
+	vector<int>adj[n+1];
+	for(int i=0;i<n-1;i++){
+		cin>>s>>d;
+		adj[s].push_back(d);
+	}
+	int q;
+	cin>>q;
+	int a,b,c;
+	vector<int>ind(n+1,-1);
+	vector<int>out(n+1,-1);
+	dfs(1,ind,out,adj);
+	while(q--){
+		cin>>a>>b>>c;
+		if(a==0){
+		if(check(b,c,ind,out)){
+			cout<<"YES"<<endl;
+		} else {
+			cout<<"NO"<<endl;
+		}
+		} else {
+			if(check(c,b,ind,out)) {
+				cout<<"YES"<<endl;
+			} else {
+				cout<<"NO"<<endl;
+			}
+		}
+	}
+	return 0;
+}
