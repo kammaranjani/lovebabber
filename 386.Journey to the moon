@@ -1,0 +1,35 @@
+method: 1
+int findpar(int x, vector<int>&par) {
+    if(par[x]==x){
+        return x;
+    }
+    return findpar(par[x],par);
+}
+int journeyToMoon(int n, vector<vector<int>> astronaut) {
+vector<int>par(n);
+for(int i=0;i<n;i++){
+par[i]=i;
+}
+for(int i=0;i<astronaut.size();i++){
+    int sp=findpar(astronaut[i][0],par);
+    int dp=findpar(astronaut[i][1],par);
+    if(sp!=dp){
+    par[sp]=dp;
+    }
+}
+unordered_map<int,int>um;
+for(int i=0;i<n;i++) {
+    um[findpar(par[i],par)]++;
+}
+long t1= n*(long)(n-1);
+long tori = t1/2;
+for(auto ele:um) {
+    if(ele.second>1){
+    long t2 = ele.second*((long)ele.second-1);
+    long tre = (t2/2);
+    tori-=tre;
+    }
+}
+cout<<tori<<endl;
+return tori;
+}
