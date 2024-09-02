@@ -1,0 +1,73 @@
+Method 1:
+   void findNse(long long nse[],long long arr[],int n) {
+        stack<int>s;
+        s.push(0);
+        for(int i=1;i<n;i++){
+            while(s.size()&&arr[s.top()]>arr[i]) {
+                nse[s.top()]=i;
+                s.pop();
+            } if(s.empty()||arr[s.top()]<=arr[i]) {
+                s.push(i);
+            }
+        }
+        while(s.size()) {
+            nse[s.top()]=n;
+            s.pop();
+        }
+    }
+    void findPse(long long pse[], long long arr[], int n){
+        stack<int>s;
+        s.push(n-1);
+        for(int i=n-2;i>=0;i--) {
+            while(s.size()&&arr[s.top()]>arr[i]){
+                pse[s.top()] = i ;
+                s.pop();
+            } 
+            if(s.empty()||arr[s.top()]<=arr[i]) {
+                s.push(i);
+            }
+        }
+        while(s.size()) {
+            pse[s.top()] = -1;
+            s.pop();
+        }
+    }
+    long long getMaxArea(long long arr[], int n)
+    {
+        long long nse[n],pse[n];
+        findNse(nse,arr,n);
+        findPse(pse,arr,n);
+        long long maxr=0;
+        for(int i=0;i<n;i++){
+         long long t= arr[i]*(nse[i]-pse[i]-1);
+         maxr = max(maxr,t);
+        }
+        return maxr;
+    }
+Method 2: efficient:
+  long long getMaxArea(long long arr[], int n)
+    {
+        stack<int>s;
+        long long maxans=0;
+        for(int i=0;i<n;i++){
+                while(s.size()&&arr[s.top()]>arr[i]){
+                int top = s.top();
+                s.pop();
+                int ps=s.size()?s.top():-1;
+                long long t = arr[top]*(i-ps-1);
+                maxans=max(maxans,t);
+            }
+             if(s.empty()||arr[i]>=arr[s.top()]) {
+                s.push(i);
+            }
+        }
+        while(s.size()){
+            int top = s.top();
+                s.pop();
+                int ps=s.size()?s.top():-1;
+                long long t = arr[top]*(n-ps-1);
+                maxans=max(maxans,t);
+        }
+        return maxans;
+    }
+
