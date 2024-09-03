@@ -1,0 +1,58 @@
+method 1:o(n),o(n)
+ int findMaxLen(string s) {
+        int n=s.size(),c=0;
+     stack<int>st;
+     st.push(-1);
+     int i=0;
+     while(i<n){
+         if(s[i]=='('){
+             st.push(i);
+         } else {
+             if(st.size()&&s[st.top()]=='('){
+                 st.pop();
+                 c=max(c,i-st.top());
+             }
+             else {
+                 st.push(i);
+             }
+         }
+         i++;
+     }
+        return c;
+    }
+method 2:efficient o(n),o(1)
+    int findMaxLen(string s) {
+        int n=s.size();
+       int l=0,r=0,ans=0;
+       int i=0;
+       while(i<n){
+           if(s[i]=='('){
+               l++;
+           } else if(s[i]==')'){
+               r++;
+           }
+           if(r>l){
+             l=0;
+             r=0;
+           } else if (l==r){
+               ans=max(ans,l*2);
+           }
+           i++;
+       }
+       i=n-1,l=0,r=0;
+        while(i>=0){
+           if(s[i]=='('){
+               l++;
+           } else if(s[i]==')'){
+               r++;
+           }
+           if(l>r){
+             l=0;
+             r=0;
+           } else if (l==r){
+               ans=max(ans,l*2);
+           }
+           i--;
+       }
+        return ans;
+    }
