@@ -1,4 +1,4 @@
-better: o(2n),o(n)
+better: o(2n),o(n) (unnecessary)
  vector<vector<int>> merge(vector<vector<int>>& intervals) {
         sort(intervals.begin(),intervals.end(),compareInt);
         vector<vector<int>>ans;
