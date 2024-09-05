@@ -150,7 +150,6 @@ class StackA{
         Node* temp = head;
         int da = temp->data;
         head = head->next;
-        head->next = NULL;
         delete temp;
         si--;
         return da;
