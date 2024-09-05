@@ -1,0 +1,174 @@
+Stack using arrays:*****************************
+#include <iostream>
+#include<bits/stdc++.h>
+using namespace std;
+class StackA {
+    int *data;
+    int cursi;
+    int si;
+    int top;
+    public:
+    StackA(int si){
+        data = new int[si];
+        this->si = si;
+        this->cursi=0;
+        this->top = -1;
+    }
+    void push(int ele) {
+        if(cursi==si){
+            cout<<"can't insert"<<endl;
+            return;
+        }
+        data[cursi]=ele;
+        cursi++;
+        top++;
+    }
+    int getTop() {
+        if(top==-1){
+            return -1;
+        }
+       return data[top];
+    }
+    
+    void pop() {
+        if(top==-1){
+            cout<<"can't pop"<<endl;
+            return;
+        }
+        top--;
+        cursi--;
+    }
+    
+    int size(){
+        return cursi;
+    }
+    
+};
+int main()
+{
+    StackA stacka(3);
+    stacka.push(1);
+    stacka.push(2);
+    stacka.pop();
+    cout<<stacka.getTop()<<endl;
+    cout<<stacka.size()<<endl;
+    stacka.pop();
+    stacka.pop();
+    stacka.push(4);
+    stacka.pop();
+    cout<<stacka.getTop()<<endl;
+    cout<<stacka.size()<<endl;
+    return 0;
+}
+stack using dynamic array:**************************************
+class StackA {
+    int *data;
+    int cursi;
+    int si;
+    int top;
+    public:
+    StackA(){
+        data = new int[3];
+        this->si = 3;
+        this->cursi=0;
+        this->top = -1;
+    }
+    void push(int ele) {
+        if(cursi==si){
+        int *newdata=new int[2*cursi];
+        for(int i=0;i<si;i++){
+            newdata[i]=data[i];
+        }
+        si*=2;
+        delete [] data;
+        data = newdata;
+        }
+        data[cursi]=ele;
+        cursi++;
+        top++;
+    }
+    int getTop() {
+        if(top==-1){
+            return -1;
+        }
+       return data[top];
+    }
+    
+    void pop() {
+        if(top==-1){
+            cout<<"can't pop"<<endl;
+            return;
+        }
+        top--;
+        cursi--;
+    }
+    
+    int size(){
+        return cursi;
+    }
+    
+    bool isEmpty(){
+        return top==-1;
+    }
+    
+};
+stack using LL:***************************************
+class Node {
+        public:
+    int data;
+    Node* next;
+
+    Node(int data){
+        this->data = data;
+        next = NULL;
+    }
+    ~Node() {
+        delete next;
+    }
+};
+
+class StackA{
+    Node* head;
+    int si;
+    public:
+    StackA(){
+        head= NULL;
+        si = 0;
+    }
+    void push(int ele) {
+      Node* newn = new Node(ele);
+      newn->next = head;
+      head = newn;
+      si++;
+    }
+    
+    int pop() {
+        if(si==0){
+            cout<<"can't pop"<<endl;
+            return -1;
+        }
+        Node* temp = head;
+        int da = temp->data;
+        head = head->next;
+        head->next = NULL;
+        delete temp;
+        si--;
+        return da;
+    }
+    
+    int top() {
+        if(si==0) {
+            return -1;
+        }
+        return head->data;
+    }
+    
+    int size(){
+        return si;
+    }
+    
+    bool isEmpty(){
+        return si==0;
+    }
+    
+};
