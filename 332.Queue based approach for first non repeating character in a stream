@@ -1,0 +1,33 @@
+Method 1 :
+	string FirstNonRepeating(string A){
+		    int n= A.size();
+		    int arr[26];
+		    for(int i=0;i<26;i++){
+		        arr[i]=0;
+		    }
+		    string ans="";
+		    queue<char>q;
+		    q.push(A[0]);
+		    ans+=A[0];
+		    arr[A[0]-'a']++;
+		    for(int i=1;i<n;i++){
+		        if(arr[A[i]-'a']==0){
+		            q.push(A[i]);
+		        }
+		        arr[A[i]-'a']++;
+		        
+		           if(q.size()&&arr[q.front()-'a']==1){
+		               ans+=q.front();
+		           } else {
+		               while(q.size()&&arr[q.front()-'a']>1){
+		                   q.pop();
+		               }
+		               if(q.empty()){
+		                   ans+='#';
+		               } else {
+		                   ans+=q.front();
+		               }
+		           }
+		       }
+		    return ans;
+		}
