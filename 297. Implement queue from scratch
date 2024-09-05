@@ -1,0 +1,233 @@
+Queue using arrays:
+class QueueA {
+    int *data;
+    int start;
+    int end;
+    int si;
+    int cursi;
+    public:
+    QueueA(int si){
+        data = new int[si];
+        this->si = si;
+        this->start = -1;
+        this->end = -1;
+        this->cursi = 0;
+    }
+    void push(int ele) {
+        if(cursi==si){
+        cout<<"can't insert"<<endl;
+        return;
+        }
+        if(start==-1){
+            start = 0;
+            end = 0;
+        }
+        data[end]=ele;
+        cursi++;
+        end=(end+1)%si;
+    }
+    int getStart() {
+        if(cursi == 0){
+            return -1;
+        }
+       return data[start];
+    }
+    void pop() {
+        if(cursi==0){
+            start = -1;
+            cout<<"can't pop"<<endl;
+            return;
+        }
+        start=(start+1)%si;
+        cursi--;
+    }
+    int size(){
+        return cursi;
+    }
+    bool isEmpty(){
+        return cursi==0;
+    }
+};
+dynamic queue:*******************************
+class QueueA {
+    int *data;
+    int start;
+    int end;
+    int si;
+    int cursi;
+    public:
+    QueueA(){
+        data = new int[3];
+        this->si = 3;
+        this->start = -1;
+        this->end = -1;
+        this->cursi = 0;
+    }
+    void push(int ele) {
+        if(cursi==si){
+        int *newdata=new int[2*si];
+        int j=0;
+        for(int i=start;i<si;i++){
+            newdata[j]=data[i];
+            j++;
+        }
+        for(int i=0;i<start;i++){
+            newdata[j]=data[i];
+            j++;
+        }
+        si*=2;
+        delete [] data;
+        data = newdata;
+        start = 0;
+        end=si;
+        }
+        if(start==-1){
+            start = 0;
+            end = 0;
+        }
+        data[end]=ele;
+        cursi++;
+        end=(end+1)%si;
+    }
+    int getStart() {
+        if(cursi == 0){
+            return -1;
+        }
+       return data[start];
+    }
+    
+    void pop() {
+        if(cursi==0){
+            start = -1;
+            cout<<"can't pop"<<endl;
+            return;
+        }
+        start=(start+1)%si;
+        cursi--;
+    }
+    
+    int size(){
+        return cursi;
+    }
+    
+    bool isEmpty(){
+        return cursi==0;
+    }
+    
+};
+int main()
+{
+    QueueA queueA;
+    queueA.push(1);
+    queueA.push(2);
+    queueA.pop();
+    cout<<queueA.getStart()<<endl;
+    cout<<queueA.size()<<endl;
+    queueA.pop();
+    queueA.pop();
+    queueA.push(4);
+    queueA.push(5);
+    queueA.push(6);
+    cout<<queueA.getStart()<<endl;
+    queueA.push(7);
+    cout<<queueA.getStart()<<endl;
+    cout<<queueA.size()<<endl;
+    cout<<queueA.isEmpty()<<endl;
+    return 0;
+}
+Queue using LL:****************************
+class Node {
+        public:
+    int data;
+    Node* next;
+
+    Node(int data){
+        this->data = data;
+        next = NULL;
+    }
+    ~Node() {
+        delete next;
+    }
+};
+
+class QueueA{
+    Node* head;
+    Node* tail;
+    int fi;
+    int ni;
+    int si;
+    public:
+    QueueA(){
+        head= NULL;
+        tail=NULL;
+        fi=-1;
+        ni=0;
+        si = 0;
+    }
+    void enqueue(int ele) {
+        if(si==0){
+           Node* newn = new Node(ele);
+           head = newn;
+           tail = newn;
+           si++;
+           return;
+        }
+      Node* newn = new Node(ele);
+      tail->next = newn;
+      tail = newn;
+      si++;
+    }
+    
+    int pop() {
+        if(si==0){
+            cout<<"can't pop"<<endl;
+            return -1;
+        }
+        Node* temp = head;
+        int da = temp->data;
+        head = head->next;
+        delete temp;
+        si--;
+        return da;
+    }
+    
+    int front() {
+        if(si==0) {
+            return -1;
+        }
+        return head->data;
+    }
+    
+    int size(){
+        return si;
+    }
+    
+    bool isEmpty(){
+        return si==0;
+    }
+    
+};
+int main()
+{
+    QueueA queueA;
+    queueA.enqueue(1);
+    queueA.enqueue(2);
+    cout<<queueA.pop()<<endl;
+    cout<<queueA.front()<<endl;
+    cout<<queueA.size()<<endl;
+    queueA.pop();
+    queueA.pop();
+    queueA.enqueue(4);
+    queueA.enqueue(5);
+    queueA.enqueue(6);
+    cout<<queueA.front()<<endl;
+    queueA.enqueue(7);
+    cout<<queueA.front()<<endl;
+    cout<<queueA.size()<<endl;
+    cout<<queueA.isEmpty()<<endl;
+    return 0;
+}
+
+
+
+
