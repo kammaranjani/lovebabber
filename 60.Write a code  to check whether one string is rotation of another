@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+bool fin1(string &a, string &b, int n, int index){
+    int j=0;
+    for(int i=index;i<n;i++){
+        if(a[j]!=b[i]){
+            return false;
+        }
+        j++;
+    }
+    for(int i=0;i<index;i++){
+        if(a[j]!=b[i]){
+            return false;
+        }
+        j++;
+    }
+    return true;
+}
+bool fin(string &a, string &b) {
+    vector<int>ind;
+    int n= a.size();
+    if(a.size()!=b.size()){
+        return 0;
+    }
+    for(int i=0;i<n;i++){
+        if(a[0]==b[i]){
+            ind.push_back(i);
+        }
+    }
+    if(ind.size()==0){
+        return 0;
+    }
+    for(int i=0;i<ind.size();i++){
+    if(fin1(a,b,n,ind[i])){
+        return true;
+    }
+    }
+    return false;
+}
+int main() {
+ string a="ABCD", b="DCAB";
+ cout<<fin(a,b);
+}
