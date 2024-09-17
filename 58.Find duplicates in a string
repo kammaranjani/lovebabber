@@ -1,0 +1,11 @@
+ int sameChar(string A, string B)
+    {
+        int j= A.size();
+        int c=0;
+        for(int i=0;i<j;i++) {
+            if(A[i]==B[i]||A[i]-'a'==B[i]-'A'||A[i]-'A'==B[i]-'a') {
+                c++;
+            } 
+        }
+        return c;
+    }
