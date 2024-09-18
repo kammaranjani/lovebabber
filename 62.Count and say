@@ -1,0 +1,18 @@
+  string countAndSay(int n) {
+     string A="1";
+     for(int i=1;i<n;i++){
+        string B ="";
+        for(int j=0;j<=A.size()-1;j++){
+        int c=1;
+        while(j<A.size()&&A[j]==A[j+1]){
+            c++;
+            j++;
+        }
+        char ch = c+'0';
+        B+=ch;
+        B+=A[j];
+        }
+        A=B;
+     }
+     return A; 
+    }
