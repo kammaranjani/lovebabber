@@ -1,0 +1,36 @@
+M-1(recursive) o(2^n),o(n)
+void printp(string s,int i, int n, string &t, vector<string>&ans) {
+if(i==n){
+    ans.push_back(t);
+    return;
+}
+t+=s[i];
+printp(s,i+1,n,t,ans);
+t.pop_back();
+printp(s,i+1,n,t,ans);
+}
+M-2(recursive) o(n*2^n),o(n)
+void printSubSeqRec(string str, int n, int index = -1, string curr = "") {
+   if(!curr.empty()){
+       cout<<curr<<endl;
+   }
+   for(int i=index+1;i<n;i++){
+       curr+=str[i];
+       printSubSeqRec(str,n,i,curr);
+       curr.pop_back();
+   }
+}
+M-3:powerset o(n*2^n),o(n)
+void printSubSeq(string str)
+{
+    int n=str.size();
+    for(int i=0;i<pow(2,n);i++){
+        string a="";
+        for(int j=0;j<n;j++){
+            if(i&(1<<j)){
+                a+=str[j];
+            }
+        }
+        cout<<a<<endl;
+    }
+}
