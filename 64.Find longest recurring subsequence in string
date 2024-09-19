@@ -1,0 +1,17 @@
+	int LongestRepeatingSubsequence(string str){
+		    int n= str.size();
+		    vector<vector<int>>dp(n,vector<int>(n,0));
+		    for(int i=0;i<n;i++){
+		        for(int j=0;j<n;j++){
+		            if(i!=j&&str[i]==str[j]){
+		                int t= (i-1>=0&&j-1>=0)? dp[i-1][j-1]:0;
+		                dp[i][j]=1+t;
+		            } else {
+		                int t= (i-1<0)? 0:dp[i-1][j];
+		                int t1 = (j-1<0)?0:dp[i][j-1];
+		                dp[i][j]=max(t,t1);
+		            }
+		        }
+		    }
+		    return dp[n-1][n-1];
+		}
