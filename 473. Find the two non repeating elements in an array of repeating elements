@@ -1,0 +1,22 @@
+   vector<int> singleNumber(vector<int> nums) 
+    {
+        int xo=0,n=nums.size();
+        for(int i=0;i<n;i++){
+            xo=xo^nums[i];
+        }
+        int nu=xo&(xo*-1);
+        vector<int>nonz;
+        vector<int>z;
+        int nxo=0,zxo=0;
+        for(int i=0;i<n;i++){
+            if(nums[i]&nu){
+                nxo=nxo^nums[i];
+            } else {
+                zxo=zxo^nums[i];
+            }
+        }
+        vector<int>ans;
+        ans.push_back(min(nxo,zxo));
+        ans.push_back(max(nxo,zxo));
+        return ans;
+    }
