@@ -37,3 +37,21 @@ int knapsack(int *weights, int *values, int n, int maxWeight) {
       }
       return a[n][maxWeight];
   }
+optimize:o(weight*targetwei),o(targetwei)
+int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       vector<int>cur(W+1,0),prev(W+1,0);
+      for(int i=n-1;i>=0;i--){
+    for(int j=0;j<=W;j++){
+        int ans=0;
+        ans=max(ans,prev[j]);
+        if(j-wt[i]>=0){
+        int a=prev[j-wt[i]];
+        ans = max(ans,val[i]+a);
+        }
+        cur[j]=ans;
+      }
+      prev=cur;
+    }
+    return cur[W];
+    }
