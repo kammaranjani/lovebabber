@@ -16,7 +16,7 @@ int matrixChainMultiplication(int* arr, int n) {
     vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
     return help(arr,0,n,dp);
 }
-Method:DP O(n^2),O(n^2)
+Method:DP O(n^3),O(n^2)
 int matrixChainMultiplication(int* arr, int n) {
 vector<vector<int>>dp(n+1,vector<int>(n+1,0));
    for(int i=n-2;i>=0;i--){
