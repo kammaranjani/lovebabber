@@ -1,3 +1,4 @@
+All methods are same. just see one method, see mods.
 Method: DP o(N),o(N)
     long long mod=1e7+9;
     long long countWays(int n, int k){
@@ -39,4 +40,19 @@ Method: DP o(N),o(N)
         d=(total*(k-1))%mod;
     }
     return ans;
+    }
+//////best:o(n),o(n)
+    long long countWays(int n, int k){
+        long long mod=1e9+7;
+        vector<long long>dp(n+1,0);
+        dp[0]=1;
+        dp[1]=k;
+        long long same=k,dif=((k%mod)*((k-1)%mod))%mod;
+        dp[2]=(same+dif)%mod;
+        for(int i=3;i<=n;i++){
+            same=dif;
+            dif=(dp[i-1]%mod)*(k-1);
+            dp[i]=(same+dif)%mod;
+        }
+        return dp[n];
     }
