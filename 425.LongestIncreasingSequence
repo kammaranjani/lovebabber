@@ -1,4 +1,4 @@
-Method: Recursive
+Method 1: Recursive
 int help(int prev,int s, vector<int>&nums){
     if(s==nums.size())
     return 0;
@@ -10,7 +10,7 @@ int help(int prev,int s, vector<int>&nums){
     int lengthOfLIS(vector<int>& nums) {
     return help(-1,0,nums);
     }
-Method: Memoization o(n^2) o(n^2)
+Method 2: Memoization o(n^2) o(n^2)
 int help(int prev,int s, vector<int>&nums,vector<vector<int>>&dp){
     if(s==nums.size())
     return 0;
@@ -28,7 +28,7 @@ int help(int prev,int s, vector<int>&nums,vector<vector<int>>&dp){
     vector<vector<int>>dp(nums.size(),vector<int>(nums.size(),-1));
     return help(-1,0,nums,dp);
     }
- Method: DP tabulation o(n^2) o(n^2)
+ Method 3: DP tabulation o(n^2) o(n^2)
   int lengthOfLIS(vector<int>& nums) {
         int n=nums.size();
       vector<vector<int>>dp(n+1,vector<int>(n+1,0));
@@ -45,7 +45,7 @@ int help(int prev,int s, vector<int>&nums,vector<vector<int>>&dp){
         }
         return dp[0][0];
     }
- Method: DP tabulation o(n^2) o(2n)
+ Method 4: DP tabulation o(n^2) o(2n)
  int lengthOfLIS(vector<int>& nums) {
         int n=nums.size();
       vector<int>c(n+1,0),ne(n+1,0);
@@ -62,7 +62,7 @@ int help(int prev,int s, vector<int>&nums,vector<vector<int>>&dp){
         }
         return ne[0];
     }
- Method: DP tabulation o(n^2) o(n)
+ Method 5: DP tabulation o(n^2) o(n)
  int lengthOfLIS(vector<int>& nums) {
      if(nums.size()==0)
     return 0;
@@ -80,7 +80,7 @@ int help(int prev,int s, vector<int>&nums,vector<vector<int>>&dp){
     }
     return ans;
 	}
-  Method: Binary Search o(nlogn), o(n)
+  Method 6: Binary Search o(nlogn), o(n)
   int lengthOfLIS(vector<int>& nums) {
        if(nums.size()==0)
        return 0;
