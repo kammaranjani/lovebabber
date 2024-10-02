@@ -1,6 +1,6 @@
 Method: Recursive
 int help(int arr[], int c, int n, int k,int s){
-        if(c<=n-1)
+        if(c>=n-1)
         return s;
         if(arr[c+1]-arr[c]<k){
             return max(help(arr,c+1,n,k,s),help(arr,c+2,n,k,s+arr[c]+arr[c+1]));
