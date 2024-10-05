@@ -1,0 +1,92 @@
+1-Length of ll
+int length(Node *head)
+{
+    Node *temp = head;
+    int c=1;
+    while(temp->next!=NULL){
+    c++;
+    temp=temp->next;
+    }
+   return c;
+}
+2- print ith node
+  void printIthNode(Node *head, int i)
+{
+    if(head==NULL)
+    return;
+    if(i==0){
+        cout<<head->data<<endl;
+        return;
+    }
+    Node* temp = head;
+    int c=0;
+    while(temp!=NULL){
+        if(c==i){
+            cout<<temp->data<<endl;
+        }
+        temp=temp->next;
+        c++;
+    }
+}
+3-Delete a node from ll
+  Node *deleteNode(Node *head, int pos)
+{
+	Node* temp = head;
+	int c=0;
+	if(head==NULL){
+		return NULL;
+	}
+        if (pos == 0) {
+			Node* x =head->next;
+            delete head;
+			return x;
+        }
+		while(temp!=NULL){
+                        if (c == pos-1) {
+                          Node *x=temp->next;
+                          if (x == NULL) {
+                            return head;
+                          }
+                          temp->next = x->next;
+                          delete x;
+                          return head;
+                        }
+                        temp=temp->next;
+						c++;
+                }
+                return head;
+}
+4-length of ll(recursive)
+int length(Node *head) {
+    if(head==NULL){
+        return 0;
+    }
+    return 1+length(head->next);
+}
+5-Insert node recursively
+Node* InsertNode(Node *head, int pos, Node* newNode)
+{
+    if(pos==0){
+      newNode->next = head;
+      return newNode;
+    }
+    if(head==NULL){
+      return NULL;
+    }
+    Node* x=InsertNode(head->next, pos-1,newNode);
+    head->next = x;
+    return head;
+}
+6-Delete node recursively
+  Node *deleteNodeRec(Node *head, int pos) {
+    if(head==NULL){
+        return head;
+    }
+    if (pos == 0) {
+        Node *temp = head->next;
+        delete head;
+        return temp;
+    }
+    head->next = deleteNodeRec(head->next, pos-1);
+    return head;
+}
