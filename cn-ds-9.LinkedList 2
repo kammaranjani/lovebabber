@@ -1,0 +1,193 @@
+2.Merge two lls
+Node *mergeTwoSortedLinkedLists(Node *head1, Node *head2)
+{
+    if(head1==NULL&&head2==NULL){
+        return NULL;
+    }
+    if (head1 == NULL) {
+        return head2;
+    }
+    if (head2 == NULL){
+        return head1;
+}
+Node* fh=NULL,*ft=NULL;
+while(head1!=NULL&&head2!=NULL){
+    if(head1->data<=head2->data){
+        if(fh==NULL){
+            fh=head1;
+            ft=head1;
+        } else {
+            ft->next = head1;
+            ft = head1;
+        }
+    head1= head1->next;
+} else{
+     if(fh==NULL){
+            fh=head2;
+            ft=head2;
+        } else {
+            ft->next = head2;
+            ft = head2;
+        }
+        head2 = head2->next;
+}
+}
+if(head1==NULL&&head2==NULL){
+  return fh;
+}
+if(head1==NULL){
+    ft->next = head2;
+    return fh;
+}
+if(head2==NULL){
+    ft->next = head1;
+    return fh;
+}
+}
+3.Merge sort(do)
+Node *merge(Node *head1, Node *head2)
+{
+    if(head1==NULL&&head2==NULL){
+        return NULL;
+    }
+    if (head1 == NULL) {
+        return head2;
+    }
+    if (head2 == NULL){
+        return head1;
+}
+Node* fh=NULL,*ft=NULL;
+while(head1!=NULL&&head2!=NULL){
+    if(head1->data<=head2->data){
+        if(fh==NULL){
+            fh=head1;
+            ft=head1;
+        } else {
+            ft->next = head1;
+            ft = head1;
+        }
+    head1= head1->next;
+} else{
+     if(fh==NULL){
+            fh=head2;
+            ft=head2;
+        } else {
+            ft->next = head2;
+            ft = head2;
+        }
+        head2 = head2->next;
+}
+}
+if(head1==NULL&&head2==NULL){
+  return fh;
+}
+if(head1==NULL){
+    ft->next = head2;
+    return fh;
+}
+if(head2==NULL){
+    ft->next = head1;
+    return fh;
+}
+}
+Node* len(Node* head){
+    if(head==NULL){
+        return head;
+    }
+    Node* temp =head;
+    while(temp->next!=NULL){
+        temp=temp->next;
+    }
+    return temp;
+}
+Node* mid(Node*head){
+    if(head==NULL||head->next==NULL){
+        return head;
+    }
+    Node* slow=head;
+    Node* fast = head->next;
+    while(fast!=NULL&&fast->next!=NULL){
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    return slow;
+}
+
+Node* msort(Node* head, Node* e){
+    if(head==NULL||head->next==NULL){
+        return head;
+    }
+    Node*mhead = mid(head);
+    Node* temp = mhead->next;
+    mhead->next = NULL;
+    Node*t1=msort(head,mhead);
+     Node*t2=msort(temp,e);
+    return merge(t1,t2);
+}
+Node *mergeSort(Node *head)
+{
+    if(head==NULL||head->next ==NULL){
+        return head;
+    }
+    return msort(head, len(head));
+}
+4.Reverse ll(Recursive)
+Node *reverseLinkedListRec(Node *head)
+{
+    if(head==NULL||head->next==NULL){
+        return head;
+    }
+    Node* revh= reverseLinkedListRec(head->next);
+    Node* temp = revh;
+    while(temp!=NULL&&temp->next!=NULL){
+        temp= temp->next;
+    }
+    if (temp != NULL) {
+        temp->next = head;
+    }
+    head->next=NULL;
+    return  revh;
+}
+5.Reverse ll(Recursive)(using pair)(do)
+  pair<Node*,Node*> reve(Node*head){
+    if(head==NULL||head->next==NULL){
+        pair<Node*,Node*> p =make_pair(head,head);
+        return p;
+    }
+    pair<Node*, Node*> revh = reve(head->next);
+    revh.second->next = head;
+    head->next = NULL;
+    pair<Node*,Node*> ans=make_pair(revh.first,head);
+    return ans;
+}
+Node *reverseLinkedListRec(Node *head)
+{
+    return reve(head).first;
+}
+6.Reverse ll(recursive)o(n)
+  Node *reverseLinkedListRec(Node *head)
+{
+    if(head==NULL||head->next==NULL){
+        return head;
+    }
+    Node* revh= reverseLinkedListRec(head->next);
+    Node* tail = head->next;
+    tail->next = head;
+    head->next = NULL;
+    return revh;
+}
+7.Reverse ll(iterative) o(n)
+Node *reverseLinkedListRec(Node *head)
+{
+    if(head==NULL||head->next==NULL){
+        return head;
+    }
+ Node* prev = NULL,*cur = head,*ne=NULL;
+ while (cur != NULL) {
+        ne= cur->next;
+        cur->next=prev;
+        prev = cur;
+        cur=ne;
+ }
+ return prev;
+}
