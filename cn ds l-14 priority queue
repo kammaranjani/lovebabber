@@ -1,0 +1,271 @@
+1.Remove min
+int removeMin() {
+        swap(pq[0],pq[pq.size()-1]);
+        int eler= pq[pq.size()-1];
+        pq.pop_back();
+        int pi = 0;
+        while(pi<pq.size()){
+            int ci1=2*pi+1;
+            int ci2=2*pi+2;
+            int mini =pi;
+            if (ci1 < pq.size() && pq[mini] > pq[ci1]) {
+                mini = ci1;
+            } 
+            if (ci2 < pq.size() &&pq[mini]>pq[ci2]){
+                  mini = ci2;
+            }
+            if(mini==pi){
+                break;
+            }
+                swap(pq[mini],pq[pi]);
+                pi=mini;
+            }
+        return eler;
+        }
+2.Max priority queue
+#include<bits/stdc++.h>
+using namespace std;
+class PriorityQueue {
+    // Declare the data members here
+ vector<int>pq;
+int ind;
+   public:
+    PriorityQueue() {
+        // Implement the constructor here
+       ind=0;
+    }
+
+    /**************** Implement all the public functions here ***************/
+
+    void insert(int element) {
+        // Implement the insert() function here
+        pq.push_back(element);
+        int ci=pq.size()-1;
+        ind++;
+        while(ci>0){
+            int pi = (ci-1)/2;
+            if(pi>=0&&pq[pi]<pq[ci]){
+                swap(pq[pi],pq[ci]);
+                ci=pi;
+            } else {
+                break;
+            }
+        }
+    }
+
+    int getMax() {
+        // Implement the getMax() function here
+        return pq[0];
+    }
+
+    int removeMax() {
+        int eler = pq[0];
+        ind--;
+        swap(pq[0],pq[pq.size()-1]);
+        pq.pop_back();
+        int pi=0;
+        while(pi<pq.size()){
+            int ci1= 2*pi+1;
+            int ci2= 2*pi+2;
+            int mini =pi;
+            if(ci1<pq.size()&&pq[mini]<pq[ci1]){
+                mini=ci1;
+            } 
+            if(ci2<pq.size()&&pq[mini]<pq[ci2]){
+                mini = ci2;
+            }
+            if(mini==pi){
+                break;
+            }
+            swap(pq[mini],pq[pi]);
+            pi=mini;
+        }
+        // Implement the removeMax() function here
+      return eler;
+    }
+
+    int getSize() { 
+        // Implement the getSize() function here
+        return pq.size();
+    }
+
+    bool isEmpty() {
+        // Implement the isEmpty() function here
+        return pq.size()==0;
+    }
+};
+3. Inbuilt heap sort
+#include<bits/stdc++.h>
+using namespace std;
+void upheapify(int arr[], int n){
+int ci=n;
+while(ci>0){
+    int pi= (ci-1)/2;
+    if(pi>=0&&arr[pi]<arr[ci]){
+        swap(arr[pi],arr[ci]);
+        ci=pi;
+    } else {
+        break;
+    }
+}
+}
+void downheapify(int arr[], int n){
+swap(arr[0],arr[n]);
+int pi=0;
+while(pi<n){
+    int ci1=2*pi+1;
+    int ci2=2*pi+2;
+    int mini = pi;
+    if(ci1<n&&arr[mini]<arr[ci1]){
+        mini = ci1;
+    }
+      if(ci2<n&&arr[mini]<arr[ci2]){
+        mini = ci2;
+    }
+    if(mini==pi){
+        break;
+    }
+    swap(arr[mini],arr[pi]);
+    pi=mini;
+}
+}
+void heapSort(int arr[], int n) {
+    if(n==0||n==1){
+        return;
+    }
+    for(int j=1;j<n;j++){
+        upheapify(arr,j);
+    }
+    for(int i=0;i<n-1;i++){
+    downheapify(arr,n-i-1);
+    }
+    for(int i=0,j=n-1;i<j;i++,j--){
+        swap(arr[i],arr[j]);
+    }
+}
+4.Check max heap
+bool isMaxHeap(int arr[], int n) {
+    for(int i=1;i<n;i++){
+        int parent=(i-1)/2;
+        if(arr[i]>arr[parent])
+            return false;
+    }
+    return true;
+}
+5.Buy the ticket
+  #include<bits/stdc++.h>
+using namespace std;
+int buyTicket(int *arr, int n, int k) {
+    queue<int>q;
+    int t=0;
+    priority_queue<int>pq;
+    for(int i=0;i<n;i++){
+        pq.push(arr[i]);
+    }
+    for(int i=0;i<n;i++){
+        if(pq.top()==i){
+            t++;
+            pq.pop();
+        if(i==k){
+            return t;
+        }
+        }
+        q.push(i);
+    }
+    while(q.size()){
+     int i=q.front();
+     if(pq.top()!=arr[i]){
+         q.pop();
+         q.push(i);
+     } else{
+         t++;
+         if(i==k){
+             return t;
+         }
+         q.pop();
+         pq.pop();
+     }
+    }
+    return t+1;
+}
+6.Merge k sorted arrays
+  m-1:
+  #include<queue>
+class triplet{
+    public:
+    int arrnum;
+    int index;
+    int ele;
+};
+class compareEle{
+    public:
+    bool operator()(triplet const& t1,triplet const& t2)
+    {
+        return t1.ele>t2.ele;
+    }
+};
+vector<int> mergeKSortedArrays(vector<vector<int>*> input) {
+    vector<int>v;
+    priority_queue<triplet,vector<triplet>,compareEle>pq;
+    triplet t[input.size()];
+    int j=0;
+    for(int i=0;i<input.size();i++){
+        t[i].arrnum=i;
+        t[i].index=j;
+            t[i].ele=input[i]->at(j);
+            pq.push(t[i]); 
+    }
+    while(!pq.empty()){
+     triplet to;
+    to=pq.top();
+    v.push_back(to.ele);
+    pq.pop();  
+    if(++to.index<input[to.arrnum]->size()){
+        to.ele=input[to.arrnum]->at(to.index);
+        pq.push(to);
+    }
+    }
+    return v;
+}
+M2:same logic with pairs
+7.Running median
+#include<bits/stdc++.h>
+void findMedian(int *arr, int n)
+{
+    priority_queue<int>maxh;
+    priority_queue<int,vector<int>,greater<int>>minh;
+    if(n==0){
+        return;
+    }
+    maxh.push(arr[0]);
+    cout<<arr[0]<<" ";
+    for(int i=1;i<n;i++){
+        if(arr[i]<=maxh.top()){
+            maxh.push(arr[i]);
+        } else {
+            minh.push(arr[i]);
+        }
+        if(maxh.size()>1+minh.size()){
+         int ele=maxh.top();
+         maxh.pop();
+         minh.push(ele);
+        } 
+        if(minh.size()>1+maxh.size()){
+        int ele=minh.top();
+         minh.pop();
+         maxh.push(ele);
+       }
+       if (minh.size() > maxh.size()) {
+         cout << minh.top() << " ";
+       } else if(minh.size()<maxh.size()){
+           cout<<maxh.top()<<" ";
+       } else {
+           cout<<(maxh.top()+minh.top())/2<<" ";
+       }
+    }
+}
+    
+    
+    
+
+    
