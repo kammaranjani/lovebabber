@@ -1,0 +1,471 @@
+1.Min heap
+  #include <bits/stdc++.h>
+int downheapify(vector<int>&pq){
+    if(pq.size()==0){
+        return -1;
+    }
+    int eler = pq[0];
+    swap(pq[0],pq[pq.size()-1]);
+    pq.pop_back();
+    int pi=0;
+    while(pi<pq.size()){
+        int ci1=2*pi+1;
+        int ci2=2*pi+2;
+        int mini = pi;
+        if(ci1<pq.size()&&pq[mini]>pq[ci1]){
+            mini=ci1;
+        }
+        if(ci2<pq.size()&&pq[mini]>pq[ci2]){
+            mini=ci2;
+        }
+        if(mini==pi){
+            break;
+        }
+        swap(pq[mini],pq[pi]);
+        pi=mini;
+    }
+    return eler;
+}
+void upheapify(vector<int>&pq, int ele){
+    pq.push_back(ele);
+    int ci=pq.size()-1;
+    while(ci>0){
+        int pi=(ci-1)/2;
+        if(pi>=0&&pq[pi]>pq[ci]){
+            swap(pq[pi],pq[ci]);
+            ci=pi;
+        } else {
+            break;
+        }
+    }
+}
+
+vector<int> minHeap(int n, vector<vector<int>>& q) {
+    vector<int>pq;
+            vector<int>ans;
+    for(int i=0;i<n;i++){
+        int nj=q[i].size();
+            if(nj==1){
+             ans.push_back(downheapify(pq));
+            } else {
+                upheapify(pq,q[i][1]);
+            }
+    }
+   
+    return ans;
+}
+2.Top K Frequent Elements
+   vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int,int>um;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+        vector<int>ans;
+        int n=nums.size();
+        for(int i=0;i<n;i++){
+            um[nums[i]]++;
+        }
+        for(auto i:um){
+            if(pq.size()<k){
+            pq.push({i.second,i.first});
+            } else {
+                if(i.second>pq.top().first){
+                    pq.pop();
+                    pq.push({i.second,i.first});
+                }
+            }
+        }
+        while(pq.size()){
+            ans.push_back(pq.top().second);
+            pq.pop();
+        }
+    return ans;
+    }
+3.Kth largest element in a stream
+  class KthLargest {
+    priority_queue<int,vector<int>,greater<int>>pq;
+    int ms;
+public:
+    KthLargest(int k, vector<int>& nums) {
+        ms=k;
+        while(pq.size()){
+            pq.pop();
+        }
+        for(int i=0;i<nums.size();i++){
+            if(pq.size()<k){
+                pq.push(nums[i]);
+            } else {
+                if(pq.top()<nums[i]){
+                    pq.pop();
+                    pq.push(nums[i]);
+                }
+            }
+        }
+    }
+    
+    int add(int val) {
+         if(pq.size()<ms){
+                pq.push(val);
+            } else{
+         if(pq.top()<val){
+            pq.pop();
+            pq.push(val);
+        }
+            }
+        return pq.top();
+    }
+};
+4.kth smallest element in a sorted matrix
+M-1:
+int kthSmallest(vector<vector<int>>& matrix, int k) {
+        priority_queue<int>pq;
+        for(int i=0;i<matrix.size();i++){
+            for(int j=0;j<matrix[i].size();j++){
+                if(pq.size()<k){
+                    pq.push(matrix[i][j]);
+                } else {
+                    if(pq.top()>matrix[i][j]){
+                        pq.pop();
+                        pq.push(matrix[i][j]);
+                    }
+                }
+            }
+        }
+        return pq.top();
+    }
+M-2:through merge k sorted lists
+M-3:in
+5.Merge k sorted lists-refer cn ds l-14 priority queues 
+6.Find median from data stream
+class MedianFinder {
+    priority_queue<int>maxh;
+    priority_queue<int, vector<int>, greater<int>>minh;
+public:
+    MedianFinder() {
+        while(maxh.size()){
+            maxh.pop();
+        }
+        while(minh.size()){
+            minh.pop();
+        }
+    }
+    
+    void addNum(int num) {
+        if(maxh.size()&&num<=maxh.top()){
+            maxh.push(num);
+        } else {
+            minh.push(num);
+        }
+        if(minh.size()>1+maxh.size()){
+            int ele= minh.top();
+            minh.pop();
+            maxh.push(ele);
+        } else if(maxh.size()>1+minh.size()){
+            int ele= maxh.top();
+            maxh.pop();
+            minh.push(ele);
+        }
+    }
+    
+    double findMedian() {
+        double ans=0.0;
+        if(minh.size()>maxh.size()){
+            cout<<"ans1"<<minh.size()<<" "<<maxh.size()<<endl;
+            ans=minh.top();
+        } else if(maxh.size()>minh.size()){
+            cout<<"ans2"<<endl;
+            ans=maxh.top();
+        } else {
+            ans=(minh.top()+maxh.top())/2.0;
+            cout<<"ans3"<<endl;
+        }
+        return ans;
+    }
+};
+7.Sliding window maximum
+m-1:
+  bruthforce: run loop from 0to n-k:
+  innerloop(from i:i+k->find maximum->store)
+complexity:o(n*k)
+m-2:using priority queue
+   vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        priority_queue<pair<int,int>>pq;
+        int n= nums.size();
+        for(int i=0;i<k;i++){
+            pq.push({nums[i],i});
+        }
+        vector<int>ans;
+        ans.push_back(pq.top().first);
+        for(int i=k;i<n;i++){
+            pq.push({nums[i],i});
+            while(i-pq.top().second>=k){
+                pq.pop();
+            }
+            ans.push_back(pq.top().first);
+        }
+        return ans;
+    }
+m-3:best o(n),o(k)
+  vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        int n = nums.size();
+        deque<int>dq;
+        vector<int>ans;
+        if(n==1){
+            ans.push_back(nums[0]);
+            return ans;
+        }
+        if(k==1){
+            ans.push_back(nums[0]);
+        }
+        dq.push_back(0);
+        int j=0;
+        for(int i=1;i<n;i++){
+            if(dq.size()&&dq.front()<=i-k){
+                dq.pop_front();
+            }
+            while(dq.size()&&nums[i]>nums[dq.back()]){
+            dq.pop_back();
+            }
+            dq.push_back(i);
+            if(i>=k-1){
+            ans.push_back(nums[dq.front()]);
+            }
+            }
+           return ans; 
+        }
+8. Sliding window median
+class Solution {
+public:
+    class Heap{
+        public:
+        vector<pair<int,int>>pq;
+        int ind;
+        bool isMaxh;
+        unordered_map<int,int>um;
+        Heap(bool isMax){
+        pq.clear();
+        um.clear();
+        ind=0;
+        isMaxh=isMax;
+        }
+        void push(pair<int,int> ele){
+            if(ind>=0&&ind<pq.size()){
+                pq[ind] = ele;
+                ind++;
+            }
+            else{
+                pq.push_back(ele);
+                ind=pq.size();
+            }
+
+            int ci=ind-1;
+            while(ci>0){
+                int pi=(ci-1)/2;
+                if(isMaxh){
+                 if(pi>=0&&pq[pi].first<pq[ci].first){
+                        swap(pq[pi],pq[ci]);
+                        ci=pi;
+                    } else {
+                        um[ele.second]=ci;
+                        return;
+                    }
+                } else {
+                      if(pi>=0&&pq[pi].first>pq[ci].first){
+                        swap(pq[pi],pq[ci]);
+                        ci=pi;
+                    } else {
+                        um[ele.second]=ci;
+                        return;
+                    }
+                }
+            }
+        }
+        pair<int,int> getTop(){
+            return pq[0];
+        }
+        int size(){
+            if(ind<=0){
+                return 0;
+            }
+            return ind;
+        }
+        bool heapify(int x){
+           int pos= -1;
+           for(int i=0;i<ind;i++){
+            if(pq[i].second==x){
+                pos=i;
+           }
+           }
+           if(pos==-1)
+           return false;
+           swap(pq[pos],pq[ind-1]);
+           ind--;
+             int pi=pos;
+            while(ind>0&&pi<ind){
+                int ci1= 2*pi+1;
+                int ci2=2*pi+2;
+                int mini=pi;
+                if(isMaxh){
+                    if(ci1<ind&&pq[mini].first<pq[ci1].first){
+                        mini=ci1;
+                    }
+                    if(ci2<ind&&pq[mini].first<pq[ci2].first){
+                        mini=ci2;
+                    }
+                    if(mini==pi){
+                        return true;
+                    } 
+                    swap(pq[mini],pq[pi]);
+                    pi=mini;
+                } else {
+                    if(ci1<ind&&pq[mini].first>pq[ci1].first){
+                        mini=ci1;
+                    }
+                    if(ci2<ind&&pq[mini].first>pq[ci2].first){
+                        mini=ci2;
+                    }
+                    if(mini==pi){
+                        return true;
+                    } 
+                    swap(pq[mini],pq[pi]);
+                    pi=mini; 
+                }
+            }
+            return true;
+        }
+        void remTop(){
+            if(ind<=0){
+                return;
+            }
+            swap(pq[0],pq[ind-1]);
+            ind--;
+            int pi=0;
+            while(pi<ind){
+                int ci1= 2*pi+1;
+                int ci2=2*pi+2;
+                int mini=pi;
+                if(isMaxh){
+                    if(ci1<ind&&pq[mini].first<pq[ci1].first){
+                        mini=ci1;
+                    }
+                    if(ci2<ind&&pq[mini].first<pq[ci2].first){
+                        mini=ci2;
+                    }
+                    if(mini==pi){
+                        return;
+                    } 
+                    swap(pq[mini],pq[pi]);
+                    pi=mini;
+                } else {
+                    if(ci1<ind&&pq[mini].first>pq[ci1].first){
+                        mini=ci1;
+                    }
+                    if(ci2<ind&&pq[mini].first>pq[ci2].first){
+                        mini=ci2;
+                    }
+                    if(mini==pi){
+                        return;
+                    } 
+                    swap(pq[mini],pq[pi]);
+                    pi=mini; 
+                }
+            }
+        }
+
+   };
+    vector<double> medianSlidingWindow(vector<int>& nums, int k) {
+        int n= nums.size();
+        Heap maxdq(true);
+        Heap mindq(false);
+        vector<double>ans;
+        maxdq.push({nums[0],0});
+        if(k==1){
+        ans.push_back(nums[0]);
+        }
+        if(n==1){
+            return ans;
+        }
+        for(int i=1;i<n;i++){
+            if(maxdq.size()&&nums[i]<=maxdq.getTop().first){
+                maxdq.push({nums[i],i});
+            } else {
+                mindq.push({nums[i],i});
+            }
+            if(i>=k){
+                bool isSuc=false;
+            if(maxdq.size()&&nums[i-k]<=maxdq.getTop().first){
+                isSuc=maxdq.heapify(i-k);
+            } 
+            if(!isSuc&&mindq.size()&&nums[i-k]>=mindq.getTop().first){
+                mindq.heapify(i-k);
+            }
+            }
+            if(mindq.size()>1+maxdq.size()){
+            maxdq.push(mindq.getTop());
+            mindq.remTop();
+            }
+            if(maxdq.size()>1+mindq.size()){
+            mindq.push(maxdq.getTop());
+            maxdq.remTop();
+            }
+            if(i>=k-1){
+                if(mindq.size()>maxdq.size()){
+                ans.push_back(mindq.getTop().first);
+            } else if(maxdq.size()>mindq.size()){
+                ans.push_back(maxdq.getTop().first);
+            } else {
+                ans.push_back(((double)maxdq.getTop().first+(double)mindq.getTop().first)/2.0);
+            }
+            }
+        }
+        return ans;
+    }
+};
+9.IPO
+  M-1:
+int help(int k, int w, int i,vector<pair<int,int>>& capfits,int fsum,int n) {
+    if(k==0||i==n){
+        return fsum;
+    }
+    if(w<0){
+        w=0;
+    }
+    int ans=help(k,w+fsum,i+1,capfits,fsum,n);
+    if(capfits[i].first<=w+fsum){
+    ans=max(ans,help(k-1,w+fsum,i+1,capfits,fsum+capfits[i].second,n));
+    }
+    return ans;
+}
+    int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+        vector<pair<int,int>>capfits;
+        int n=capital.size();
+        for(int i=0;i<n;i++){
+            capfits.push_back({capital[i],profits[i]});
+        }
+        sort(capfits.begin(), capfits.end());
+        return help(k,w,0,capfits,0,n)+w;
+    }
+M-2:
+int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+        int t=k;
+        vector<pair<int,int>>capfits;
+        priority_queue<int>pq;
+        int n=capital.size();
+        for(int i=0;i<n;i++){
+            capfits.push_back({capital[i],profits[i]});
+        }
+        sort(capfits.begin(), capfits.end());
+        int i=0;
+        while(i<n){
+            while(i<n&&capfits[i].first<=w){
+                pq.push(capfits[i].second);
+                i++;
+            }
+            if(t>0&&pq.size()){
+            w+=pq.top();
+            pq.pop();
+            t--;
+            } else {
+                break;
+            }
+        }
+        return w;
+    }
