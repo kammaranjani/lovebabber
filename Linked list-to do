@@ -1,0 +1,611 @@
+3.Palindrome linkedlist
+ListNode* reverse(ListNode* head){
+        ListNode*prev=NULL, *cur=head, *nextNode=NULL;
+        while(cur!=NULL){
+            nextNode=cur->next;
+            cur->next = prev;
+            prev=cur;
+            cur=nextNode;
+        }
+        return prev;
+    }
+    ListNode* mid(ListNode* head){
+        ListNode* slow= head;
+        ListNode* fast = head->next;
+        while(fast!=NULL&&fast->next!=NULL){
+            fast=fast->next->next;
+            slow=slow->next;
+        }
+        return slow;
+    }
+    void print(ListNode* head){
+        ListNode* temp = head;
+        while(temp!=NULL){
+        cout<<temp->val<<" ";
+        temp= temp->next;
+        }
+        cout<<endl;
+    }
+    bool isPalindrom(ListNode* firstHead,ListNode* secondHead){
+    while(firstHead!=NULL&&secondHead!=NULL){
+            if(firstHead->val!=secondHead->val){
+                return false;
+            }
+            firstHead = firstHead->next;
+            secondHead = secondHead->next;
+        }
+    return true;
+    }
+    bool isPalindrome(ListNode* head) {
+        if(head==NULL||head->next==NULL){
+            return true;
+        }
+        ListNode* middle= mid(head);
+        ListNode* revHead = reverse(middle->next);
+        middle->next=revHead;
+        print(head);
+        ListNode* firstHead = head;
+        ListNode* secondHead = revHead;
+        bool ans = isPalindrom(firstHead,secondHead);
+        ListNode* reRevHead = reverse(revHead);
+        middle->next = reRevHead;
+        print(head);
+        return ans;
+    }
+4.Intersection of two linked lists
+ int length(ListNode* head){
+        if(head==NULL){
+            return 0;
+        }
+        int l=0;
+        ListNode* temp = head;
+        while(temp!=NULL){
+            l++;
+            temp=temp->next;
+        }
+        return l;
+    }
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int lengthOfFirst = length(headA);
+        int lengthOfSecond = length(headB);
+        ListNode* tempA = headA;
+        ListNode* tempB = headB;
+        int diff = abs(lengthOfFirst-lengthOfSecond);
+        int c=0;
+        if(lengthOfFirst>lengthOfSecond){
+        while(tempA!=NULL&&c<diff){
+            tempA = tempA->next;
+            c++;
+        }
+        } else {
+            while(tempB!=NULL&&c<diff){
+                tempB = tempB->next;
+                c++;
+            }
+        }
+        while(tempA!=NULL&&tempB!=NULL&&tempA!=tempB){
+            tempA = tempA->next;
+            tempB = tempB->next;
+        }
+        if(tempA==NULL||tempB ==NULL){
+            return NULL;
+        }
+        return tempA;
+    }
+M-2:
+ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* temp1 = headA,*temp2= headB;
+        while(temp1!=NULL&&temp2!=NULL&&temp1!=temp2){
+            temp1=temp1 -> next;
+            temp2 = temp2->next;
+            if(temp1==temp2){
+                return temp1;
+            }
+            if(temp1==NULL){
+                temp1 = headB;
+            }
+            if(temp2==NULL){
+                temp2 = headA;
+            }
+        }
+        return temp1;
+    }
+5.LL cycle-1
+  bool hasCycle(ListNode *head) {
+        ListNode* fast= head, *slow= head;
+        do {
+            if(fast==NULL||fast->next==NULL){
+                return false;
+            }
+            fast= fast->next->next;
+            slow= slow->next;
+            if(fast==slow){
+                return true;
+            }
+        } while(fast!=NULL&&fast->next!=NULL&&fast!=slow);
+        return false;
+    }
+6.ll cycle-2
+  ListNode *detectCycle(ListNode *head) {
+        ListNode* fast= head, *slow= head;
+        do{
+            cout<<"a"<<endl;
+            if(fast==NULL||fast->next==NULL){
+                return NULL;
+            }
+            fast = fast->next->next;
+            slow = slow->next;
+            if(fast==slow){
+                break;
+            }
+        } while(fast!=slow);
+        fast=head;
+        while(fast!=slow){
+            fast= fast->next;
+            slow= slow->next;
+            if(fast==slow){
+                return slow;
+            }
+        }
+        return slow;
+    }
+7.Sum of ll
+  ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        if(l1==NULL && l2== NULL){
+            return NULL;
+        }
+        ListNode* temp1 =l1,*temp2 = l2;
+        int c=0;
+        ListNode* head = NULL, *tail = NULL;
+        while(temp1!=NULL&&temp2!=NULL){
+            int val = (temp1->val + temp2->val + c)%10;
+            c = (temp1->val + temp2->val + c)/10;
+            ListNode* newNode = new ListNode(val);
+            if (head == NULL){
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail->next = newNode;
+                tail = newNode;
+            }
+            temp1 = temp1->next;
+            temp2 = temp2->next;
+        }
+        while(temp1!=NULL){
+            int val = (temp1->val + c)%10;
+            c = (temp1->val + c)/10;
+            ListNode* newNode = new ListNode(val);
+            if (head == NULL){
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail->next = newNode;
+                tail = newNode;
+            }
+            temp1 = temp1->next;
+        }
+        while(temp2!=NULL) {
+            int val = (temp2->val + c)%10;
+            c = (temp2->val + c)/10;
+            ListNode* newNode = new ListNode(val);
+            if (head == NULL){
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail->next = newNode;
+                tail = newNode;
+            } 
+            temp2 = temp2->next;
+        }
+        if(c!=0){
+             ListNode* newNode = new ListNode(c);
+            if (head == NULL){
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail->next = newNode;
+                tail = newNode;
+            } 
+        }
+        return head;
+    }
+8. Rotate array by k
+ int length(ListNode* head){
+        int l=0;
+        ListNode* temp = head;
+        while(temp!=NULL){
+            l++;
+            temp = temp->next;
+        }
+        return l;
+    }
+    ListNode* rotateRight(ListNode* head, int k) {
+        cout<<"a"<<endl;
+        if(head==NULL||head->next==NULL){
+            return head;
+        }
+        int len = length(head);
+        k = k%len;
+        int diff = len-k;
+        int count =0;
+        cout<<diff<<endl;
+        ListNode * temp = head;
+        while(temp!=NULL&& count!=diff-1&&diff-1>0){
+            temp = temp->next;
+            count++;
+        }
+        ListNode* tail = temp, *tHead = temp->next;
+        if(temp==NULL||temp->next == NULL){
+            return head;
+        }
+        tail->next = NULL;
+        ListNode* ttemp= tHead;
+        while(ttemp->next!=NULL){
+            ttemp = ttemp->next;
+        }
+        ttemp->next = head;
+        return tHead;
+    }
+9.Flatten tree to ll
+TreeNode* convertTreeToLL(TreeNode* root){
+        if(root==NULL||(root->right == NULL&& root->left == NULL)){
+            return root;
+        }
+        TreeNode * rightPart = root->right;
+        TreeNode* leftPart= root->left;
+        TreeNode* leftTail = convertTreeToLL(root->left);
+        TreeNode* rightTail = convertTreeToLL(root->right);
+        root->left= NULL;
+        if(leftPart!=NULL){
+        root->right = leftPart;
+        if(leftTail!=NULL){
+        leftTail->right = rightPart;
+        }
+        } else {
+            root->right = rightPart;
+        }
+        if(rightTail==NULL&&leftTail!=NULL){
+        return leftTail;
+        }
+        return rightTail;
+    }
+    void flatten(TreeNode* root) {
+        TreeNode* ans = convertTreeToLL(root);
+    }
+10. Remove nth node from end of ll
+   int Length(ListNode* head){
+        int l=0;
+        ListNode* temp = head;
+        while(temp!=NULL){
+            l++;
+            temp = temp->next;
+        }
+        return l;
+    }
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        if(head==NULL){
+            return NULL;
+        }
+        int len = Length(head);
+        if(n>len){
+            return head;
+        }
+        if(len==n){
+            ListNode* temp = head->next;
+            ListNode* toBeDel = head;
+            delete head;
+            return temp;
+        }
+        int indFromFirst = len-n;
+        int count = 0;
+        ListNode* temp = head;
+        while(temp!= NULL&&count < indFromFirst-1&&indFromFirst-1>0){
+            temp = temp->next;
+            count++;
+        }
+        
+        ListNode* sto = NULL;
+        if(temp->next != NULL){
+        sto = temp->next->next;
+        }
+        ListNode* toBeDel = temp->next;
+        delete toBeDel;
+        temp -> next = sto;
+        return head;
+    }
+11.Insertion sort list
+ ListNode* insertionSortList(ListNode* head) {
+        if(head==NULL||head->next ==NULL){
+            return head;
+        }
+        ListNode*cur= head->next,*prev=head,*ne= NULL;
+        while(cur!=NULL){
+            if(prev->val<=cur->val){
+                prev= cur;
+                cur = cur->next;
+            }
+            else if(cur->val<=head->val){
+                ne= cur->next;
+                prev ->next = ne;
+                cur->next = head;
+                head=cur;
+                cur = ne;
+            }  else {
+                ListNode* temp1 = head, *prev1 = NULL;
+                while(cur->val>temp1->val) {
+                    prev1 = temp1;
+                    temp1 = temp1->next;
+                }
+                ne= cur->next;
+                prev->next = ne;
+                cur->next = temp1;
+                prev1->next = cur;
+                cur = ne;
+            }
+        }
+        return head;
+    }
+12.swap nodes in pairs
+ ListNode* swapPairs(ListNode* head) {
+        if(head==NULL||head->next==NULL){
+            return head;
+        }
+        ListNode* prev = NULL, *cur= head, *ne = NULL, *temp = head;
+        if(cur!=NULL){
+            ne= cur->next;
+            if(ne!=NULL&&cur->next!=NULL){
+            cur->next = ne->next;
+            }
+            if(ne!=NULL){
+            ne->next = cur;
+            }
+            head = ne;
+            prev = cur;
+            cur=cur->next;
+        }
+        while(cur!=NULL&&cur->next!=NULL){
+            ne = cur-> next;
+            if(ne!=NULL&&cur!=NULL){
+            cur->next = ne->next;
+            }
+            if(ne!=NULL){
+                ne->next = cur;
+            }
+                prev->next = ne;
+                prev = cur;
+                cur = cur->next;
+            }
+        return head;
+    }
+13. Reverse nodes in k group
+   ListNode* length(ListNode* head, int k){
+        ListNode* temp = head;
+        int c=1;
+        while(temp!=NULL&&c<=k){
+            if(c==k){
+                return temp;
+            }
+            c++;
+            temp = temp->next;
+        }
+        return NULL;
+    }
+    ListNode* reverse(ListNode* head){
+        ListNode* cur = head, *prev =NULL, *ne = NULL;
+        while(cur!=NULL){
+            ne= cur->next;
+            cur->next = prev;
+            prev = cur;
+            cur = ne;
+        }
+        return prev;
+    }
+    ListNode* revKGroup(ListNode* head, int k){
+        ListNode* tail = length(head, k);
+        if(tail == NULL){
+            return head;
+        }
+        ListNode* revKHead = revKGroup(tail->next, k);
+        tail->next = NULL;
+        ListNode* revHead = reverse(head);
+        head->next = revKHead;
+        head = revHead;
+        return head;
+    }
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(k==0||k==1){
+            return head;
+        }
+        return revKGroup(head,k);
+    }
+14.Flatten a multilevel doubly linked list
+    pair<Node*, Node*> traverse(Node* head){
+         if(head==NULL || head->next==NULL&&head->child==NULL){
+            return {head,head};
+        }
+        if(head->next== NULL) {
+            pair<Node*,Node*> childNode = traverse(head->child);
+            if(childNode.first!=NULL){
+            head->next = childNode.first;
+            childNode.first->prev = head;
+            head->child = NULL;
+            return { head, childNode.second};
+        }
+        }
+        Node* temp = head, *tail = NULL;
+    while(temp!=NULL){
+        tail = temp;
+        pair<Node*,Node*> childNode = traverse(temp->child);
+        if(childNode.first!=NULL){
+            Node* tempNext = temp->next;
+            temp->next = childNode.first;
+            childNode.first->prev = temp;
+            childNode.second->next = tempNext;
+            if(tempNext!=NULL){
+            tempNext->prev = childNode.second;
+            }
+            temp->child = NULL;
+        }
+        temp = temp->next;
+    }
+    return {head, tail};
+    }
+    Node* flatten(Node* head) {
+        return traverse(head).first;
+    }
+15. Copy list with random pointer
+ Node* copyRandomList(Node* head) {
+        if(head==NULL){
+            return NULL;
+        }
+        Node* copyHead = NULL;
+        Node* copyTail = NULL;
+        Node* temp = head;
+        unordered_map<Node*,Node*>um;
+        um[head] = copyHead;
+        while(temp!=NULL){
+            Node* newNode = new Node(temp->val);
+            if(copyHead==NULL){
+                copyHead = newNode;
+                copyTail = newNode;
+            } else {
+                copyTail->next = newNode;
+                copyTail = newNode;
+            }
+            um[temp] = copyTail;
+            temp = temp->next;
+        }
+        temp = head;
+        while(temp!=NULL){
+            Node* rand = um[temp->random];
+            Node* valueNode = um[temp];
+            valueNode->random = rand;
+            temp = temp->next;
+        }
+        return copyHead;
+    }
+m-2:(best)
+    Node* copyRandomList(Node* head) {
+        if(head==NULL){
+            return NULL;
+        }
+        Node* copyHead = NULL;
+        Node* temp = head;
+        Node* dummy = new Node(-1);
+        dummy->next = head;
+        Node* prev = dummy, *cur= head, *ne = NULL;
+        while(cur!=NULL){
+            ne= cur->next;
+                Node* newNode = new Node(cur->val);
+            cur->next = newNode;
+            newNode -> next = ne;
+            cur = ne;
+        }
+        cur = head;
+        while(cur!= NULL&& cur->next!= NULL){
+            if(cur->random == NULL){
+                cur->next->random = NULL;
+            } else {
+            Node* temp1 = cur->random;
+            if(temp1->next!=NULL){
+                cur->next->random = temp1->next;
+            }
+            }
+            cur = cur->next->next;
+        }
+        cur = head, temp = dummy;
+        while(cur!=NULL && cur->next!=NULL){
+            ne = cur->next->next;
+            temp->next = cur->next;
+            temp = cur->next;
+            cur->next = ne;
+            cur = ne;
+        }
+        copyHead = dummy->next;
+        dummy->next = NULL;
+        return copyHead;
+    }
+16. Merge inbetween linkedlists
+  ListNode* mergeInBetween(ListNode* list1, int a, int b, ListNode* list2) {
+        int one=min(a,b),two = max(a,b);
+        a=one,b=two;
+        ListNode* prev1 = NULL,*prev = list1, *cur1 = NULL, *prev2 = NULL, *cur2 = NULL, *temp = list1, *secondTail = list2;
+        while(secondTail->next!=NULL){
+            secondTail = secondTail->next;
+        }
+        int c=0;
+        while(temp!=NULL){
+            if(c == a || c ==b){
+                if(a==b){
+                    prev->next = list2;
+                    secondTail->next = temp->next;
+                    return list1;
+                }
+                if(cur1==NULL){
+                    cur1= temp;
+                    prev1= prev;
+                } else{
+                    cur2= temp;
+                    prev2= temp->next;
+                    break;
+                }
+            }
+            c++;
+            prev = temp;
+            temp = temp->next;
+        }
+        if(prev1==NULL){
+            secondTail->next = cur2;
+            return list1;
+        } else {
+          prev1->next = list2;
+          if(secondTail!=NULL){
+            secondTail->next = prev2;
+          }
+        }
+        return list1;
+    }
+17.Maximum twin sum of ll
+same like palindrome 
+18.Merge k lists
+  class comp{
+        public:
+        bool operator()(ListNode* const & a, ListNode* const &  b) {
+            if(a!=NULL&&b!=NULL) {
+            return a->val>=b->val;
+            }
+            return false;
+        }
+    };
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        int n= lists.size();
+        if(n==0){
+            return NULL;
+        }
+        if(n==1){
+            return lists[0];
+        }
+        priority_queue<ListNode*, vector<ListNode*>, comp> pq;
+        for(int i=0;i<n;i++){
+            if(lists[i]!=NULL){
+            pq.push(lists[i]);
+            }
+        }
+        ListNode* head= NULL, *tail = NULL;
+        while(pq.size()){
+            ListNode* topHead = pq.top();
+            pq.pop();
+            if(head==NULL){
+                head = topHead;
+                tail = topHead;
+            } else {
+                tail->next = topHead;
+                tail = topHead;
+            }
+            if(topHead->next!=NULL){
+                pq.push(topHead->next);
+            }
+        }
+        return head;
+    }
+19.
