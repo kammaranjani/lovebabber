@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+#include <bits/stdc++.h>
+
+long long m= 1e9+7;
+
+long long mod(long long N){
+    return ((N%m)+m)%m;
+}
+
+long long mul(long long a, long long b){
+    return mod(mod(a)*mod(b));
+}
+
+long long add(long long a, long long b){
+    return mod(mod(a)+mod(b));
+}
+
+long long sub(long long a, long long b){
+    return mod(mod(a)-mod(b)+m);
+}
+
+void solve(string& a, string& b){
+    int an = a.size(), bn = b.size();
+    vector<long long> powm(an,0);
+    powm[0]=1;
+    for(int i=1;i<an;i++){
+        powm[i]= mul(powm[i-1],31);
+    }
+    long long ph=0;
+    for(int i=0;i<bn;i++){
+        ph= add(ph,mul(powm[i],b[i]-'a'+1));
+    }
+    vector<long long> th(an+1);
+    for(int i=0;i<an;i++){
+        th[i+1]=add(th[i],mul(a[i]-'a'+1,powm[i]));;
+    }
+    for(int i=0;i<an-bn+1;i++){
+        long long hash=sub(th[i+bn],th[i]);
+        if(hash == mul(ph,powm[i])){
+            cout<<i<<endl;
+        }
+    }
+}
+
+int main() {
+	string a="cdabcdab", b="abcd";
+	solve(a,b);
+    return 0;
+}
