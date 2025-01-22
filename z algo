@@ -1,0 +1,35 @@
+in this:
+  int strStr(string haystack, string needle) {
+        int hs = haystack.size(), ns = needle.size();
+        string temp = needle+'$'+haystack;
+        int n= temp.size();
+        vector<int> dp(n,0);
+        int left=0,right =0,k=1;
+        while(k<n){
+            if(k>right) {
+                left = right = k;
+                while(right<n&&temp[right]==temp[right-left]){
+                    right++;
+                }
+                dp[k]=right-left;
+                right--;
+            } else {
+                int k1 = k-left;
+                if(dp[k1]<right-k+1){
+                    dp[k]=dp[k1];
+                } else {
+                    left = k;
+                    while(right<n&&temp[right]==temp[right-left]){
+                        right++;
+                    }
+                    dp[k]=right-left;
+                    right--;
+                }
+            }
+            if(dp[k]==ns){
+                return k-ns-1;
+            }
+            k++;
+        }
+        return -1;
+    }
